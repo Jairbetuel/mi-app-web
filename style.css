@@ -1,4 +1,7 @@
-/* Configuración General - Estilo Gamer Moderno */
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -7,15 +10,18 @@
 }
 
 body {
-    background-color: #0f172a; /* Azul muy oscuro casi negro */
+    background-color: #0f172a;
     color: #f8fafc;
     line-height: 1.6;
 }
 
-/* Encabezado con degradado */
+/* =========================
+   HEADER
+========================= */
+
 header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    color: #00ff88; /* Verde Neón */
+    color: #00ff88;
     text-align: center;
     padding: 3rem 0;
     border-bottom: 3px solid #00ff88;
@@ -28,7 +34,10 @@ header h1 {
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
-/* Navegación */
+/* =========================
+   NAVEGACIÓN
+========================= */
+
 nav {
     background-color: #1e293b;
     padding: 15px 0;
@@ -55,7 +64,10 @@ nav ul li a:hover {
     color: #00ff88;
 }
 
-/* Contenedor Principal */
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+
 .container {
     display: flex;
     max-width: 1200px;
@@ -68,13 +80,16 @@ nav ul li a:hover {
     flex: 3;
 }
 
-/* Tarjetas de Videojuegos (Game Cards) */
+/* =========================
+   TARJETAS DE JUEGOS
+========================= */
+
 .game-card {
     background-color: #1e293b;
     padding: 25px;
     margin-bottom: 25px;
     border-radius: 12px;
-    border-left: 5px solid #3b82f6; /* Acento azul */
+    border-left: 5px solid #3b82f6;
     transition: transform 0.3s ease;
 }
 
@@ -101,8 +116,11 @@ nav ul li a:hover {
     margin: 15px 0;
 }
 
-/* Botón de Compra */
-.buy-button {
+/* =========================
+   BOTONES
+========================= */
+
+button {
     background-color: #00ff88;
     color: #0f172a;
     border: none;
@@ -110,14 +128,18 @@ nav ul li a:hover {
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
 }
 
-.buy-button:hover {
+button:hover {
     background-color: #00cc6e;
+    transform: scale(1.05);
 }
 
-/* Barra Lateral (Aside) */
+/* =========================
+   ASIDE
+========================= */
+
 aside {
     flex: 1;
 }
@@ -154,7 +176,65 @@ aside ul li a:hover {
     text-decoration: underline;
 }
 
-/* Pie de página */
+/* =========================
+   FORMULARIOS
+========================= */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #cbd5e1;
+}
+
+input,
+textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 2px solid #334155;
+    background-color: #0f172a;
+    color: white;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto al enfocar */
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #00ff88;
+    box-shadow: 0 0 8px rgba(0,255,136,0.5);
+}
+
+/* Validación visual */
+input:valid,
+textarea:valid {
+    border-color: #00ff88;
+}
+
+input:invalid,
+textarea:invalid {
+    border-color: #ef4444;
+}
+
+/* =========================
+   SECCIÓN CONTACTO
+========================= */
+
+#contacto {
+    background-color: #1e293b;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
 footer {
     background-color: #0f172a;
     color: #64748b;
@@ -162,4 +242,18 @@ footer {
     padding: 30px 0;
     margin-top: 50px;
     border-top: 1px solid #1e293b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+
+    aside {
+        position: static;
+    }
 }
