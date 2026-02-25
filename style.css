@@ -16,52 +16,111 @@ body {
 }
 
 /* =========================
-   HEADER
+   NAVBAR PROFESIONAL
 ========================= */
 
-header {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    color: #00ff88;
-    text-align: center;
-    padding: 3rem 0;
-    border-bottom: 3px solid #00ff88;
+.navbar {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    border-top: 4px solid #00ff88;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
-header h1 {
-    font-size: 3rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+.nav-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+.logo img {
+    width: 35px;
+    filter: drop-shadow(0 0 5px #00ff88);
+}
+
+/* Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #cbd5e1;
+    font-weight: 600;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #00ff88;
+}
+
+/* Línea animada */
+.nav-links li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 2px;
+    background-color: #00ff88;
+    transition: width 0.3s ease;
+}
+
+.nav-links li:hover::after {
+    width: 100%;
 }
 
 /* =========================
-   NAVEGACIÓN
+   HERO
 ========================= */
 
-nav {
-    background-color: #1e293b;
-    padding: 15px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-nav ul {
+.hero {
+    background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e') center/cover no-repeat;
+    height: 350px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    list-style: none;
-    gap: 30px;
+    align-items: center;
+    color: white;
+    text-align: center;
+    position: relative;
 }
 
-nav ul li a {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
 }
 
-nav ul li a:hover {
+.hero h1,
+.hero p {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
     color: #00ff88;
+    margin-bottom: 10px;
 }
 
 /* =========================
@@ -71,7 +130,7 @@ nav ul li a:hover {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 30px auto;
+    margin: 40px auto;
     gap: 30px;
     padding: 0 20px;
 }
@@ -90,12 +149,12 @@ nav ul li a:hover {
     margin-bottom: 25px;
     border-radius: 12px;
     border-left: 5px solid #3b82f6;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .game-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 
 .game-card h2 {
@@ -126,7 +185,7 @@ button {
     border: none;
     padding: 10px 20px;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -149,7 +208,7 @@ aside {
     padding: 20px;
     border-radius: 12px;
     position: sticky;
-    top: 80px;
+    top: 90px;
 }
 
 aside h3 {
@@ -202,7 +261,6 @@ textarea {
     transition: border 0.3s, box-shadow 0.3s;
 }
 
-/* Efecto al enfocar */
 input:focus,
 textarea:focus {
     outline: none;
@@ -222,13 +280,21 @@ textarea:invalid {
 }
 
 /* =========================
-   SECCIÓN CONTACTO
+   CONTACT SECTION
 ========================= */
 
-#contacto {
+.contact-section {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 30px;
     background-color: #1e293b;
     border-radius: 12px;
-    padding: 30px;
+}
+
+.contact-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ff88;
 }
 
 /* =========================
@@ -253,7 +319,8 @@ footer {
         flex-direction: column;
     }
 
-    aside {
-        position: static;
+    .nav-links {
+        gap: 15px;
+        font-size: 0.9rem;
     }
 }
