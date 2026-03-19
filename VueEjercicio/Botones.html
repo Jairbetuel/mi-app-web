@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<title>Tienda Gamer</title>
+
+<link rel="stylesheet" href="3botones.css">
+
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3"></script>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<h1>Tienda de Videojuegos 🎮</h1>
+
+<div class="contenedor">
+
+<button @click="mostrarInfo('j1')">Mario Kart</button>
+
+<div v-if="activo === 'j1'" class="info">
+<img src="mario.jpg">
+<p>Mario Kart es un divertido juego de carreras con personajes de Nintendo.</p>
+</div>
+
+
+<button @click="mostrarInfo('j2')">Call of Duty</button>
+
+<div v-if="activo === 'j2'" class="info">
+<img src="cod.jpg">
+<p>Call of Duty es un juego de disparos en primera persona.</p>
+</div>
+
+
+<button @click="mostrarInfo('j3')">Minecraft</button>
+
+<div v-if="activo === 'j3'" class="info">
+<img src="minecraft.jpg">
+<p>Minecraft es un juego donde puedes construir mundos con bloques.</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            activo: null
+        }
+    },
+    methods: {
+        mostrarInfo(juego) {
+            // Si vuelves a presionar el mismo, se oculta
+            this.activo = this.activo === juego ? null : juego;
+        }
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>

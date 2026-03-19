@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<title>Imagen Videojuego</title>
+
+<link rel="stylesheet" href="videojuego.css">
+
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3"></script>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<h1>Personaje de Videojuego 🎮</h1>
+
+<img :src="imagen" :style="{ width: tamaño + 'px' }">
+
+<br><br>
+
+<button @click="aumentar">Aumentar tamaño</button>
+<button @click="disminuir">Disminuir tamaño</button>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            imagen: 'mario.jpg',
+            tamaño: 200 // tamaño inicial en px
+        }
+    },
+    methods: {
+        aumentar() {
+            this.tamaño += 20;
+        },
+        disminuir() {
+            if (this.tamaño > 50) {
+                this.tamaño -= 20;
+            }
+        }
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>

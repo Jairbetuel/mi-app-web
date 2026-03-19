@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Tienda online profesional de videojuegos">
+  <meta name="keywords" content="Videojuegos, PC, PlayStation, Xbox, Nintendo">
+  <meta name="author" content="Jair Hernández">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameStore Central</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --green:    #00e676;
+      --green-dim:#00c45a;
+      --bg:       #0a0a0a;
+      --surface:  #111111;
+      --surface2: #181818;
+      --border:   #222222;
+      --text:     #f0f0f0;
+      --muted:    #777777;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: rgba(10,10,10,0.95) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--green) !important;
+      letter-spacing: 2px;
+    }
+    .nav-link {
+      color: var(--muted) !important;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem !important;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 1rem; right: 1rem;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+    .nav-link:hover { color: var(--text) !important; }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-cart {
+      background: var(--green);
+      color: #000 !important;
+      border-radius: 6px;
+      padding: 0.4rem 1rem !important;
+      font-weight: 700 !important;
+    }
+    .nav-cart:hover { background: var(--green-dim); color: #000 !important; }
+    .nav-cart::after { display: none; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1800&q=80');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.25);
+      transform: scale(1.05);
+      animation: heroZoom 12s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.12); }
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,230,118,0.07) 0%, transparent 60%, rgba(0,0,0,0.5) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px; height: 2px;
+      background: var(--green);
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s ease forwards;
+    }
+    .hero-title span { color: var(--green); }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s ease forwards;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s ease forwards;
+    }
+    .hero-stats {
+      position: absolute;
+      bottom: 2.5rem; right: 0;
+      display: flex;
+      gap: 2.5rem;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s ease forwards;
+    }
+    .stat-item { text-align: right; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--green);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary-custom {
+      background: var(--green);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary-custom:hover {
+      background: var(--green-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,230,118,0.3);
+      color: #000;
+    }
+    .btn-outline-custom {
+      background: transparent;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline-custom:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0.75rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 30px; height: 2px;
+      background: var(--green);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: 3px;
+      line-height: 1;
+      color: #fff;
+    }
+
+    /* ── CAROUSEL ── */
+    .carousel-section { padding: 5rem 0; background: var(--surface); }
+    #carouselExample { border-radius: 12px; overflow: hidden; }
+    .carousel-item img { height: 480px; object-fit: cover; filter: brightness(0.6); }
+    .carousel-caption-custom {
+      position: absolute;
+      bottom: 2.5rem; left: 2.5rem;
+      z-index: 10;
+      text-align: left;
+    }
+    .carousel-caption-custom h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+    .carousel-caption-custom p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .carousel-indicators [data-bs-target] {
+      width: 24px; height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.4);
+      border: none;
+    }
+    .carousel-indicators .active { background: var(--green); }
+
+    /* ── GAME CARDS ── */
+    .games-section { padding: 5rem 0; }
+    .game-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      height: 100%;
+    }
+    .game-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px var(--green);
+      border-color: var(--green);
+    }
+    .game-card-img-wrap { position: relative; overflow: hidden; }
+    .game-card-img-wrap img {
+      width: 100%; height: 220px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .game-card:hover .game-card-img-wrap img { transform: scale(1.07); }
+    .game-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--green);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+    .game-badge.sale { background: #ff4757; color: #fff; }
+    .game-card-body { padding: 1.4rem; }
+    .game-platform { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .game-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+    .game-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+    .game-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .game-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      color: var(--green);
+      letter-spacing: 1px;
+    }
+    .game-price-old { font-size: 0.8rem; color: var(--muted); text-decoration: line-through; display: block; line-height: 1; }
+    .btn-buy {
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.55rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .btn-buy:hover {
+      background: var(--green);
+      color: #000;
+      box-shadow: 0 4px 16px rgba(0,230,118,0.3);
+    }
+    .stars { color: #ffd700; font-size: 0.75rem; margin-bottom: 0.3rem; }
+
+    /* ── PROMO BANNER ── */
+    .promo-banner {
+      background: linear-gradient(135deg, #0a1a0f 0%, #001a0a 100%);
+      border: 1px solid rgba(0,230,118,0.2);
+      border-radius: 12px;
+      padding: 3rem;
+      margin: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,230,118,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .promo-tag {
+      display: inline-block;
+      background: var(--green);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+    }
+    .promo-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 3px;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .promo-title span { color: var(--green); }
+    .promo-sub { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-bottom: 2rem; }
+
+    /* ── CATEGORIES ── */
+    .categories-section { padding: 5rem 0; background: var(--surface); }
+    .cat-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      height: 100%;
+    }
+    .cat-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--green);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .cat-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+    .cat-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .cat-count { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-section { padding: 5rem 0; }
+    .newsletter-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3.5rem;
+    }
+    .newsletter-input-wrap { position: relative; }
+    .newsletter-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.85rem 160px 0.85rem 1.2rem;
+      border-radius: 6px;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .newsletter-input:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,230,118,0.12);
+    }
+    .newsletter-input::placeholder { color: var(--muted); }
+    .newsletter-btn {
+      position: absolute;
+      right: 6px; top: 50%;
+      transform: translateY(-50%);
+      background: var(--green);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.6rem 1.3rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .newsletter-btn:hover { background: var(--green-dim); }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 5rem 0; background: var(--surface); }
+    .form-control-custom {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.85rem 1.2rem;
+      border-radius: 6px;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control-custom:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,230,118,0.12);
+      background: var(--bg);
+      color: var(--text);
+    }
+    .form-control-custom::placeholder { color: var(--muted); }
+    .form-label-custom {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--green);
+    }
+    .footer-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--green); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: var(--muted); margin: 0; }
+    .social-links { display: flex; gap: 0.75rem; }
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-link:hover { border-color: var(--green); color: var(--green); }
+
+    .divider { height: 1px; background: var(--border); margin: 0; }
+
+    /* ── SCROLL FADE-IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in:nth-child(2) { transition-delay: 0.1s; }
+    .fade-in:nth-child(3) { transition-delay: 0.2s; }
+
+    @media (max-width: 767px) {
+      .hero-stats { gap: 1.5rem; bottom: 1.5rem; }
+      .promo-banner { padding: 2rem; }
+      .newsletter-wrap { padding: 2rem; }
+      .newsletter-input { padding-right: 1.2rem; }
+      .newsletter-btn { position: static; transform: none; width: 100%; margin-top: 0.5rem; display: block; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">🎮 GAMESTORE</a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+        data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#juegos">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#categorias">Categorías</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Soporte</a></li>
+          <li class="nav-item ms-2">
+            <a class="nav-link nav-cart" href="#"><i class="bi bi-cart3 me-1"></i>Carrito</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO — Imagen de gaming competitivo / luces RGB -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content py-5">
+      <div class="row">
+        <div class="col-lg-7">
+          <div class="hero-eyebrow">Nuevo lanzamiento semanal</div>
+          <h1 class="hero-title">JUEGA<br>SIN<br><span>LÍMITES</span></h1>
+          <p class="hero-desc">
+            Descubre miles de títulos para PC, PlayStation, Xbox y Nintendo. Precios al mejor valor y entrega digital instantánea.
+          </p>
+          <div class="hero-actions">
+            <a href="#juegos" class="btn-primary-custom">Explorar catálogo</a>
+            <a href="#" class="btn-outline-custom"><i class="bi bi-play-fill me-1"></i>Ver tráilers</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">12K+</div>
+          <div class="stat-label">Títulos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4.9</div>
+          <div class="stat-label">Rating</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">200K</div>
+          <div class="stat-label">Clientes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CAROUSEL — imágenes temáticas coherentes con cada juego -->
+  <section class="carousel-section">
+    <div class="container">
+      <div class="row mb-4 align-items-end">
+        <div class="col">
+          <div class="section-label">Destacados</div>
+          <h2 class="section-title">EN TENDENCIA</h2>
+        </div>
+        <div class="col-auto">
+          <a href="#" class="btn-outline-custom">Ver todos <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+
+      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner" style="border-radius:12px; overflow:hidden;">
+
+          <!-- Elden Ring: ruinas medievales oscuras, atmósfera épica -->
+          <div class="carousel-item active" style="position:relative;">
+            <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1400&q=80"
+              class="d-block w-100" style="height:480px;object-fit:cover;filter:brightness(0.45);" alt="Elden Ring — ruinas épicas">
+            <div class="carousel-caption-custom">
+              <span class="game-badge mb-2 d-inline-block">Nuevo</span>
+              <h3>ELDEN RING</h3>
+              <p>Explora las Tierras Intermedias — un mundo oscuro y épico</p>
+            </div>
+          </div>
+
+          <!-- Resident Evil 4: bosque oscuro y ominoso, survival horror -->
+          <div class="carousel-item" style="position:relative;">
+            <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=1400&q=80"
+              class="d-block w-100" style="height:480px;object-fit:cover;filter:brightness(0.4);" alt="Resident Evil 4 — bosque de terror">
+            <div class="carousel-caption-custom">
+              <span class="game-badge sale mb-2 d-inline-block">−20%</span>
+              <h3>RESIDENT EVIL 4</h3>
+              <p>Survival horror reinventado con gráficos de nueva generación</p>
+            </div>
+          </div>
+
+          <!-- Zelda TOTK: paisaje natural abierto, montañas y cielo abierto -->
+          <div class="carousel-item" style="position:relative;">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80"
+              class="d-block w-100" style="height:480px;object-fit:cover;filter:brightness(0.45);" alt="Zelda TOTK — mundo abierto montañoso">
+            <div class="carousel-caption-custom">
+              <span class="game-badge mb-2 d-inline-block">Top Ventas</span>
+              <h3>ZELDA: TEARS OF THE KINGDOM</h3>
+              <p>Vuela sobre el reino de Hyrule en la aventura más ambiciosa de Nintendo</p>
+            </div>
+          </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- JUEGOS -->
+  <section class="games-section" id="juegos">
+    <div class="container">
+      <div class="row mb-4 align-items-end">
+        <div class="col">
+          <div class="section-label">Catálogo</div>
+          <h2 class="section-title">JUEGOS POPULARES</h2>
+        </div>
+        <div class="col-auto">
+          <a href="#" class="btn-outline-custom">Ver catálogo completo <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Elden Ring: guerrero con armadura en paisaje oscuro y desolado -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800&q=80" alt="Elden Ring">
+              <span class="game-badge">Nuevo</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-pc-display me-1"></i>PC · PS5 · Xbox</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+              </div>
+              <h3 class="game-title">ELDEN RING</h3>
+              <p class="game-desc">Explora un vasto mundo oscuro lleno de enemigos legendarios y secretos por descubrir.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">$59.99</span>
+                  <span class="game-price">$39.99</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resident Evil 4: callejón oscuro y neblina, atmósfera de terror -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&q=80" alt="Resident Evil 4">
+              <span class="game-badge sale">−20%</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-pc-display me-1"></i>PC · PS5 · Xbox</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              </div>
+              <h3 class="game-title">RESIDENT EVIL 4</h3>
+              <p class="game-desc">Revive el clásico survival horror completamente rehecho con gráficos modernos.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">$59.99</span>
+                  <span class="game-price">$45.00</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zelda TOTK: montañas verdes y cielo abierto, naturaleza aventurera -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=800&q=80" alt="Zelda Tears of the Kingdom">
+              <span class="game-badge">Top Ventas</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-nintendo-switch me-1"></i>Nintendo Switch</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              </div>
+              <h3 class="game-title">ZELDA: TOTK</h3>
+              <p class="game-desc">Una nueva y épica aventura en el reino de Hyrule con mecánicas de construcción únicas.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">&nbsp;</span>
+                  <span class="game-price">$59.99</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- God of War: paisaje nórdico nevado, árboles y montañas con nieve -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=800&q=80" alt="God of War Ragnarök">
+              <span class="game-badge">Oferta</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-pc-display me-1"></i>PC · PS5</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+              </div>
+              <h3 class="game-title">GOD OF WAR</h3>
+              <p class="game-desc">Kratos y Atreus enfrentan la mitología nórdica en esta épica aventura de padre e hijo.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">$49.99</span>
+                  <span class="game-price">$29.99</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cyberpunk 2077: ciudad nocturna con luces de neón y rascacielos -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&q=80" alt="Cyberpunk 2077">
+              <span class="game-badge sale">−50%</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-pc-display me-1"></i>PC · PS5 · Xbox</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+              </div>
+              <h3 class="game-title">CYBERPUNK 2077</h3>
+              <p class="game-desc">Sumérgete en Night City, una megalópolis de neón, crimen y tecnología del futuro.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">$59.99</span>
+                  <span class="game-price">$29.99</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EA Sports FC 25: estadio de fútbol con cancha iluminada -->
+        <div class="col-md-4 fade-in">
+          <div class="game-card">
+            <div class="game-card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1508098682722-e99c643e7f0b?w=800&q=80" alt="EA Sports FC 25">
+              <span class="game-badge">Nuevo</span>
+            </div>
+            <div class="game-card-body">
+              <div class="game-platform"><i class="bi bi-pc-display me-1"></i>PC · PS5 · Xbox</div>
+              <div class="stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+              </div>
+              <h3 class="game-title">EA SPORTS FC 25</h3>
+              <p class="game-desc">El fútbol más realista con nuevas mecánicas, ligas actualizadas y modo carrera mejorado.</p>
+              <div class="game-footer">
+                <div>
+                  <span class="game-price-old">&nbsp;</span>
+                  <span class="game-price">$49.99</span>
+                </div>
+                <button class="btn-buy"><i class="bi bi-cart-plus me-1"></i>Comprar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <div class="container">
+    <div class="promo-banner fade-in">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <span class="promo-tag">Oferta por tiempo limitado</span>
+          <h2 class="promo-title">HASTA <span>70% OFF</span><br>EN JUEGOS INDIE</h2>
+          <p class="promo-sub">Descubre joyas independientes a precios increíbles. Solo este fin de semana.</p>
+          <a href="#" class="btn-primary-custom">Aprovechar oferta <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+        <div class="col-lg-5 text-center">
+          <!-- Controlador y pantalla gaming colorida, coherente con "indie / gaming" -->
+          <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&q=80"
+            alt="Gaming indie" style="width:100%;max-width:340px;border-radius:10px;opacity:0.85;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CATEGORÍAS -->
+  <section class="categories-section" id="categorias">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col">
+          <div class="section-label">Explorar</div>
+          <h2 class="section-title">CATEGORÍAS</h2>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">⚔️</span><div class="cat-name">ACCIÓN</div><div class="cat-count">842 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">🗺️</span><div class="cat-name">AVENTURA</div><div class="cat-count">653 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">⚽</span><div class="cat-name">DEPORTES</div><div class="cat-count">214 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">♟️</span><div class="cat-name">ESTRATEGIA</div><div class="cat-count">391 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">🎨</span><div class="cat-name">INDIE</div><div class="cat-count">1,204 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">👻</span><div class="cat-name">TERROR</div><div class="cat-count">178 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">🚀</span><div class="cat-name">SCI-FI</div><div class="cat-count">309 títulos</div></div></div>
+        <div class="col-6 col-md-3 fade-in"><div class="cat-card"><span class="cat-icon">🎭</span><div class="cat-name">RPG</div><div class="cat-count">527 títulos</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-wrap fade-in">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-5">
+            <div class="section-label">Mantente al día</div>
+            <h2 class="section-title">OFERTAS<br>EXCLUSIVAS</h2>
+            <p style="color:var(--muted);font-size:0.9rem;margin-top:0.75rem;line-height:1.7;">
+              Suscríbete y sé el primero en conocer lanzamientos, descuentos y promociones especiales.
+            </p>
+          </div>
+          <div class="col-lg-7">
+            <div class="newsletter-input-wrap">
+              <input type="email" class="newsletter-input" placeholder="correo@ejemplo.com" minlength="5" maxlength="50">
+              <button class="newsletter-btn">Suscribirme</button>
+            </div>
+            <p style="font-size:0.72rem;color:var(--muted);margin-top:0.75rem;letter-spacing:0.5px;">
+              Sin spam. Cancela cuando quieras. Más de 200,000 gamers ya suscritos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FORMULARIO DE SOPORTE -->
+  <section class="contact-section" id="contacto">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+          <div class="section-label">Ayuda</div>
+          <h2 class="section-title">SOPORTE<br>AL CLIENTE</h2>
+          <p style="color:var(--muted);font-size:0.9rem;margin-top:1rem;line-height:1.7;max-width:360px;">
+            ¿Tienes algún problema con tu compra? Nuestro equipo está disponible 24/7 para ayudarte.
+          </p>
+          <div class="mt-3 d-flex flex-column gap-2" style="font-size:0.85rem;color:var(--muted);">
+            <span><i class="bi bi-envelope-fill me-2" style="color:var(--green);"></i>soporte@gamestore.mx</span>
+            <span><i class="bi bi-whatsapp me-2" style="color:var(--green);"></i>+52 (55) 1234-5678</span>
+            <span><i class="bi bi-clock-fill me-2" style="color:var(--green);"></i>Respuesta en menos de 1 hora</span>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:2.5rem;">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Nombre Completo</label>
+                <input type="text" class="form-control-custom" placeholder="Juan García"
+                  minlength="3" maxlength="40" pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" title="Solo letras y espacios">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Teléfono</label>
+                <input type="tel" class="form-control-custom" placeholder="5512345678"
+                  pattern="[0-9]{10}" title="Debe contener 10 números">
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Correo electrónico</label>
+                <input type="email" class="form-control-custom" placeholder="correo@ejemplo.com">
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Asunto</label>
+                <select class="form-control-custom">
+                  <option value="" style="background:#111;">Selecciona un tema</option>
+                  <option style="background:#111;">Problema con mi compra</option>
+                  <option style="background:#111;">Reembolso</option>
+                  <option style="background:#111;">Activación de clave</option>
+                  <option style="background:#111;">Otro</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label-custom">Mensaje</label>
+                <textarea class="form-control-custom" rows="4" placeholder="Describe tu problema..."
+                  minlength="10" maxlength="300" style="resize:vertical;"></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn-primary-custom w-100">
+                  <i class="bi bi-send me-2"></i>Enviar mensaje
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <div class="footer-brand">🎮 GAMESTORE</div>
+          <p class="footer-desc">Tu destino definitivo para videojuegos digitales. Los mejores títulos para todas las plataformas, al mejor precio.</p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Tienda</div>
+          <ul class="footer-links">
+            <li><a href="#">Catálogo</a></li>
+            <li><a href="#">Lanzamientos</a></li>
+            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Pre-venta</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Plataformas</div>
+          <ul class="footer-links">
+            <li><a href="#">PC / Steam</a></li>
+            <li><a href="#">PlayStation</a></li>
+            <li><a href="#">Xbox</a></li>
+            <li><a href="#">Nintendo</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Soporte</div>
+          <ul class="footer-links">
+            <li><a href="#">Centro de ayuda</a></li>
+            <li><a href="#">Reembolsos</a></li>
+            <li><a href="#">Mi cuenta</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Legal</div>
+          <ul class="footer-links">
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Términos</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 GameStore Central · Proyecto de Jair Hernández</p>
+        <div class="social-links">
+          <a class="social-link" href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a class="social-link" href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a class="social-link" href="#" aria-label="Discord"><i class="bi bi-discord"></i></a>
+          <a class="social-link" href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

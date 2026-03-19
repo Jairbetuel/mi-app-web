@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora Vue</title>
+
+<link rel="stylesheet" href="calculadora.css">
+
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+<h2>Calculadora Simple +</h2>
+
+<label>Valor A:</label>
+<input type="number" v-model.number="a">
+
+<br><br>
+
+<label>Valor B:</label>
+<input type="number" v-model.number="b">
+
+<br><br>
+
+<button @click="calcular('+')">Sumar</button>
+<button @click="calcular('-')">Restar</button>
+<button @click="calcular('*')">Multiplicar</button>
+<button @click="calcular('/')">Dividir</button>
+
+<h3>Resultado: <span>{{ resultado }}</span></h3>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            a: 0,
+            b: 0,
+            resultado: 0
+        }
+    },
+    methods: {
+        calcular(op) {
+            switch(op) {
+                case '+':
+                    this.resultado = this.a + this.b;
+                    break;
+                case '-':
+                    this.resultado = this.a - this.b;
+                    break;
+                case '*':
+                    this.resultado = this.a * this.b;
+                    break;
+                case '/':
+                    this.resultado = this.b !== 0 
+                        ? this.a / this.b 
+                        : 'Error (división por 0)';
+                    break;
+            }
+        }
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>

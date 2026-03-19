@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Carrito - GameStore</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/vue@3"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+color:white;
+font-family:Segoe UI;
+}
+
+.card{
+background:#141414;
+border:none;
+margin-bottom:15px;
+}
+
+.total{
+font-size:22px;
+color:cyan;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-black">
+<div class="container">
+<a href="home.html" class="navbar-brand">🎮 GameStore</a>
+<a href="catalogo.html" class="btn btn-outline-info">Volver</a>
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<h2 class="text-center mb-4">🛒 Carrito</h2>
+
+<div v-if="carrito.length===0" class="text-center">
+<p>Tu carrito está vacío 😢</p>
+</div>
+
+<div v-else>
+
+<div class="card p-3"
+v-for="(p,index) in carrito"
+:key="index">
+
+<div class="d-flex justify-content-between">
+
+<div>
+<h5>{{p.nombre}}</h5>
+<p>$ {{p.precio}}</p>
+
+<button @click="disminuir(index)" class="btn btn-sm btn-secondary">-</button>
+<span class="mx-2">{{p.cantidad}}</span>
+<button @click="aumentar(index)" class="btn btn-sm btn-secondary">+</button>
+
+</div>
+
+<button @click="eliminar(index)" class="btn btn-danger">X</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<p class="total">Total: ${{total}}</p>
+
+<button class="btn btn-success" @click="abrirPago">Pagar</button>
+
+</div>
+
+</div>
+
+<!-- MODAL PAGO -->
+
+<div class="modal fade" id="modalPago">
+<div class="modal-dialog">
+<div class="modal-content bg-dark text-white">
+
+<div class="modal-header">
+<h5>💳 Pago con tarjeta</h5>
+<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<input v-model="telefono" class="form-control mb-2" placeholder="WhatsApp (521...)">
+
+<input v-model="numeroTarjeta" class="form-control mb-2" placeholder="Número de tarjeta" maxlength="19" @input="formatearTarjeta">
+<small class="text-danger">{{errorNumero}}</small>
+
+<input v-model="nombreTarjeta" class="form-control mb-2" placeholder="Nombre del titular">
+<small class="text-danger">{{errorNombre}}</small>
+
+<input v-model="fecha" class="form-control mb-2" placeholder="MM/AA" maxlength="5" @input="formatearFecha">
+<small class="text-danger">{{errorFecha}}</small>
+
+<input v-model="cvv" class="form-control mb-2" placeholder="CVV" maxlength="3">
+<small class="text-danger">{{errorCVV}}</small>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-success" @click="pagar">Confirmar pago</button>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+Vue.createApp({
+
+data(){
+return{
+
+carrito: JSON.parse(localStorage.getItem("carrito")) || [],
+
+telefono:"",
+numeroTarjeta:"",
+nombreTarjeta:"",
+fecha:"",
+cvv:"",
+
+errorNumero:"",
+errorNombre:"",
+errorFecha:"",
+errorCVV:""
+
+}
+},
+
+mounted(){
+this.carrito.forEach(p=>{
+if(!p.cantidad)p.cantidad=1
+})
+},
+
+computed:{
+total(){
+return this.carrito.reduce((s,p)=>s+(p.precio*p.cantidad),0)
+}
+},
+
+methods:{
+
+aumentar(i){
+this.carrito[i].cantidad++
+this.guardar()
+},
+
+disminuir(i){
+if(this.carrito[i].cantidad>1){
+this.carrito[i].cantidad--
+this.guardar()
+}
+},
+
+eliminar(i){
+this.carrito.splice(i,1)
+this.guardar()
+},
+
+guardar(){
+localStorage.setItem("carrito",JSON.stringify(this.carrito))
+},
+
+abrirPago(){
+new bootstrap.Modal(document.getElementById("modalPago")).show()
+},
+
+formatearTarjeta(){
+this.numeroTarjeta=this.numeroTarjeta.replace(/\D/g,"").replace(/(.{4})/g,"$1 ").trim()
+},
+
+formatearFecha(){
+this.fecha=this.fecha.replace(/\D/g,"").replace(/(\d{2})(\d{0,2})/,"$1/$2")
+},
+
+pagar(){
+
+this.errorNumero=""
+this.errorNombre=""
+this.errorFecha=""
+this.errorCVV=""
+
+let ok=true
+
+if(this.numeroTarjeta.replace(/\s/g,"").length!==16){
+this.errorNumero="Tarjeta inválida"
+ok=false
+}
+
+if(this.nombreTarjeta.length<3){
+this.errorNombre="Nombre inválido"
+ok=false
+}
+
+if(!/^\d{2}\/\d{2}$/.test(this.fecha)){
+this.errorFecha="Fecha inválida"
+ok=false
+}
+
+if(this.cvv.length!==3){
+this.errorCVV="CVV inválido"
+ok=false
+}
+
+if(!this.telefono){
+alert("Ingresa número de WhatsApp")
+ok=false
+}
+
+if(!ok)return
+
+// 🧾 MENSAJE PROFESIONAL
+let mensaje="🎮 *GameStore - Ticket de Compra*\n\n"
+
+this.carrito.forEach(p=>{
+mensaje+=`• ${p.nombre} x${p.cantidad} = $${p.precio*p.cantidad}\n`
+})
+
+mensaje+=`\n💰 *Total: $${this.total}*\n`
+mensaje+="\n✅ Pago realizado con éxito"
+mensaje+="\n🎮 ¡Gracias por tu compra!"
+
+let url=`https://wa.me/${this.telefono}?text=${encodeURIComponent(mensaje)}`
+
+window.open(url,"_blank")
+
+this.carrito=[]
+localStorage.removeItem("carrito")
+
+let modal=bootstrap.Modal.getInstance(document.getElementById("modalPago"))
+modal.hide()
+
+alert("Pago realizado y enviado por WhatsApp 💳📲")
+
+}
+
+}
+
+}).mount("#app")
+
+</script>
+
+</body>
+</html>

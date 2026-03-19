@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Catálogo - GameStore</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/vue@3"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+color:white;
+font-family:Segoe UI;
+}
+
+.titulo{
+text-align:center;
+margin-top:40px;
+margin-bottom:30px;
+}
+
+.card{
+background:#141414;
+border:none;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px cyan;
+}
+
+.card img{
+height:200px;
+object-fit:cover;
+}
+
+.precio{
+color:#00ffff;
+font-weight:bold;
+font-size:18px;
+}
+
+.rating{
+color:gold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<nav class="navbar navbar-dark bg-black">
+<div class="container">
+<a class="navbar-brand">🎮 GameStore</a>
+
+<div>
+<a href="home.html" class="btn btn-outline-light me-2">Inicio</a>
+<a href="carrito.html" class="btn btn-warning">
+🛒 Carrito ({{ carrito.length }})
+</a>
+</div>
+
+</div>
+</nav>
+
+<!-- FORMULARIO -->
+
+<div class="container mt-4">
+
+<h4 class="text-center mb-3">
+{{ editando ? "✏ Editar juego" : "➕ Agregar juego" }}
+</h4>
+
+<div class="row g-2">
+
+<div class="col-md-3">
+<input v-model="nuevo.nombre" class="form-control" placeholder="Nombre">
+</div>
+
+<div class="col-md-2">
+<input v-model="nuevo.precio" type="number" class="form-control" placeholder="Precio">
+</div>
+
+<div class="col-md-3">
+<input v-model="nuevo.img" class="form-control" placeholder="URL imagen">
+</div>
+
+<div class="col-md-2">
+<input v-model="nuevo.rating" class="form-control" placeholder="★★★★★">
+</div>
+
+<div class="col-md-2">
+
+<button v-if="!editando"
+@click="agregarJuego"
+class="btn btn-success w-100">
+Agregar
+</button>
+
+<button v-else
+@click="guardarEdicion"
+class="btn btn-warning w-100">
+Guardar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CATALOGO -->
+
+<div class="container">
+
+<h2 class="titulo">🎮 Catálogo</h2>
+
+<div class="row g-4">
+
+<div class="col-md-4"
+v-for="(juego,index) in juegos"
+:key="index">
+
+<div class="card">
+
+<img :src="juego.img">
+
+<div class="card-body text-center">
+
+<h5>{{ juego.nombre }}</h5>
+
+<p class="rating">{{ juego.rating }}</p>
+
+<p class="precio">${{ juego.precio }}</p>
+
+<button class="btn btn-info mb-2"
+@click="agregarCarrito(juego)">
+Agregar al carrito
+</button>
+
+<button class="btn btn-danger mb-2"
+@click="eliminarJuego(index)">
+Eliminar
+</button>
+
+<button class="btn btn-warning"
+@click="editarJuego(index)">
+Editar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+Vue.createApp({
+
+data(){
+return{
+
+carrito: JSON.parse(localStorage.getItem("carrito")) || [],
+
+juegos: JSON.parse(localStorage.getItem("juegos")) || [
+
+{
+nombre:"Elden Ring",
+precio:39.99,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
+},
+
+{
+nombre:"Resident Evil 4",
+precio:45,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"
+},
+
+{
+nombre:"Star Wars Jedi Survivor",
+precio:59.99,
+rating:"★★★★☆",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"
+},
+
+{
+nombre:"Cyberpunk 2077",
+precio:35,
+rating:"★★★★☆",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg"
+},
+
+{
+nombre:"Marvel Spider-Man",
+precio:49,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/header.jpg"
+},
+
+{
+nombre:"Red Dead Redemption 2",
+precio:39,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg"
+},
+
+{
+nombre:"Counter Strike 2",
+precio:20,
+rating:"★★★★☆",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg"
+},
+
+{
+nombre:"GTA V",
+precio:29,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg"
+},
+
+{
+nombre:"Baldur's Gate 3",
+precio:59,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg"
+}
+
+],
+
+nuevo:{
+nombre:"",
+precio:"",
+img:"",
+rating:"★★★★★"
+},
+
+editando:false,
+indexEditar:null
+
+}
+},
+
+methods:{
+
+agregarCarrito(juego){
+
+this.carrito.push(juego)
+localStorage.setItem("carrito", JSON.stringify(this.carrito))
+
+},
+
+agregarJuego(){
+
+if(!this.nuevo.nombre || !this.nuevo.precio){
+alert("Completa los datos")
+return
+}
+
+this.juegos.push({...this.nuevo})
+
+localStorage.setItem("juegos", JSON.stringify(this.juegos))
+
+this.limpiar()
+
+},
+
+eliminarJuego(index){
+
+this.juegos.splice(index,1)
+localStorage.setItem("juegos", JSON.stringify(this.juegos))
+
+},
+
+editarJuego(index){
+
+this.nuevo = {...this.juegos[index]}
+this.editando = true
+this.indexEditar = index
+
+},
+
+guardarEdicion(){
+
+this.juegos[this.indexEditar] = {...this.nuevo}
+
+localStorage.setItem("juegos", JSON.stringify(this.juegos))
+
+this.limpiar()
+
+},
+
+limpiar(){
+
+this.nuevo = {
+nombre:"",
+precio:"",
+img:"",
+rating:"★★★★★"
+}
+
+this.editando = false
+this.indexEditar = null
+
+}
+
+}
+
+}).mount("#app")
+
+</script>
+
+</body>
+</html>

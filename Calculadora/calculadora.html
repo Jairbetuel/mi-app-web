@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora JS</title>
+<link rel="stylesheet" href="calculadora.css">
+</head>
+
+<body>
+
+<h2>Calculadora Simple
+    +
+</h2>
+
+<label>Valor A:</label>
+<input type="number" id="a">
+
+<br><br>
+
+<label>Valor B:</label>
+<input type="number" id="b">
+
+<br><br>
+
+<button onclick="calcular('+')">Sumar</button>
+<button onclick="calcular('-')">Restar</button>
+<button onclick="calcular('*')">Multiplicar</button>
+<button onclick="calcular('/')">Dividir</button>
+
+<h3>Resultado: <span id="resultado">0</span></h3>
+
+<script src="calculadora.js"></script>
+
+</body>
+</html>
