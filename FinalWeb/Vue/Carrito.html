@@ -9,7 +9,6 @@
 <title>Carrito - GameStore</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <script src="https://unpkg.com/vue@3"></script>
 
 <style>
@@ -24,12 +23,25 @@ font-family:Segoe UI;
 background:#141414;
 border:none;
 margin-bottom:15px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.card:hover{
+box-shadow:0 0 15px cyan;
+transform:scale(1.02);
 }
 
 .total{
-font-size:22px;
+font-size:28px;
 color:cyan;
 font-weight:bold;
+}
+
+.btn-cantidad{
+width:30px;
+height:30px;
+padding:0;
 }
 
 </style>
@@ -43,17 +55,17 @@ font-weight:bold;
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-black">
 <div class="container">
-<a href="home.html" class="navbar-brand">🎮 GameStore</a>
-<a href="catalogo.html" class="btn btn-outline-info">Volver</a>
+<a href="./Home.html" class="navbar-brand">🎮 GameStore</a>
+<a href="./Catalogo.html" class="btn btn-outline-info">← Volver</a>
 </div>
 </nav>
 
 <div class="container mt-5">
 
-<h2 class="text-center mb-4">🛒 Carrito</h2>
+<h2 class="text-center mb-4">🛒 Carrito de Compras</h2>
 
 <div v-if="carrito.length===0" class="text-center">
-<p>Tu carrito está vacío 😢</p>
+<p class="fs-4">Tu carrito está vacío 😢</p>
 </div>
 
 <div v-else>
@@ -62,44 +74,51 @@ font-weight:bold;
 v-for="(p,index) in carrito"
 :key="index">
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between align-items-center">
 
 <div>
 <h5>{{p.nombre}}</h5>
 <p>$ {{p.precio}}</p>
 
-<button @click="disminuir(index)" class="btn btn-sm btn-secondary">-</button>
+<div class="d-flex align-items-center">
+<button @click="disminuir(index)" class="btn btn-secondary btn-cantidad">-</button>
 <span class="mx-2">{{p.cantidad}}</span>
-<button @click="aumentar(index)" class="btn btn-sm btn-secondary">+</button>
-
-</div>
-
-<button @click="eliminar(index)" class="btn btn-danger">X</button>
-
+<button @click="aumentar(index)" class="btn btn-secondary btn-cantidad">+</button>
 </div>
 
 </div>
 
-</div>
-
-<div class="text-center mt-4">
-
-<p class="total">Total: ${{total}}</p>
-
-<button class="btn btn-success" @click="abrirPago">Pagar</button>
+<button @click="eliminar(index)" class="btn btn-danger">Eliminar</button>
 
 </div>
 
 </div>
 
-<!-- MODAL PAGO -->
+</div>
 
+<div class="text-center mt-4" v-if="carrito.length>0">
+
+<p class="total">Total: ${{total.toFixed(2)}}</p>
+
+<button class="btn btn-success me-2" @click="abrirPago">
+💳 Pagar
+</button>
+
+<button class="btn btn-outline-danger" @click="vaciarCarrito">
+🧹 Vaciar carrito
+</button>
+
+</div>
+
+</div>
+
+<!-- MODAL -->
 <div class="modal fade" id="modalPago">
 <div class="modal-dialog">
 <div class="modal-content bg-dark text-white">
 
 <div class="modal-header">
-<h5>💳 Pago con tarjeta</h5>
+<h5>💳 Pago</h5>
 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
 </div>
 
@@ -107,22 +126,22 @@ v-for="(p,index) in carrito"
 
 <input v-model="telefono" class="form-control mb-2" placeholder="WhatsApp (521...)">
 
-<input v-model="numeroTarjeta" class="form-control mb-2" placeholder="Número de tarjeta" maxlength="19" @input="formatearTarjeta">
+<input v-model="numeroTarjeta" class="form-control mb-2" placeholder="Número de tarjeta">
 <small class="text-danger">{{errorNumero}}</small>
 
 <input v-model="nombreTarjeta" class="form-control mb-2" placeholder="Nombre del titular">
 <small class="text-danger">{{errorNombre}}</small>
 
-<input v-model="fecha" class="form-control mb-2" placeholder="MM/AA" maxlength="5" @input="formatearFecha">
+<input v-model="fecha" class="form-control mb-2" placeholder="MM/AA">
 <small class="text-danger">{{errorFecha}}</small>
 
-<input v-model="cvv" class="form-control mb-2" placeholder="CVV" maxlength="3">
+<input v-model="cvv" class="form-control mb-2" placeholder="CVV">
 <small class="text-danger">{{errorCVV}}</small>
 
 </div>
 
 <div class="modal-footer">
-<button class="btn btn-success" @click="pagar">Confirmar pago</button>
+<button class="btn btn-success" @click="pagar">Confirmar</button>
 </div>
 
 </div>
@@ -187,20 +206,17 @@ this.carrito.splice(i,1)
 this.guardar()
 },
 
+vaciarCarrito(){
+this.carrito=[]
+localStorage.removeItem("carrito")
+},
+
 guardar(){
 localStorage.setItem("carrito",JSON.stringify(this.carrito))
 },
 
 abrirPago(){
 new bootstrap.Modal(document.getElementById("modalPago")).show()
-},
-
-formatearTarjeta(){
-this.numeroTarjeta=this.numeroTarjeta.replace(/\D/g,"").replace(/(.{4})/g,"$1 ").trim()
-},
-
-formatearFecha(){
-this.fecha=this.fecha.replace(/\D/g,"").replace(/(\d{2})(\d{0,2})/,"$1/$2")
 },
 
 pagar(){
@@ -212,7 +228,7 @@ this.errorCVV=""
 
 let ok=true
 
-if(this.numeroTarjeta.replace(/\s/g,"").length!==16){
+if(this.numeroTarjeta.length<16){
 this.errorNumero="Tarjeta inválida"
 ok=false
 }
@@ -222,7 +238,7 @@ this.errorNombre="Nombre inválido"
 ok=false
 }
 
-if(!/^\d{2}\/\d{2}$/.test(this.fecha)){
+if(!this.fecha.includes("/")){
 this.errorFecha="Fecha inválida"
 ok=false
 }
@@ -233,34 +249,26 @@ ok=false
 }
 
 if(!this.telefono){
-alert("Ingresa número de WhatsApp")
+alert("Ingresa WhatsApp")
 ok=false
 }
 
 if(!ok)return
 
-// 🧾 MENSAJE PROFESIONAL
-let mensaje="🎮 *GameStore - Ticket de Compra*\n\n"
+let mensaje="🎮 GameStore - Compra\n\n"
 
 this.carrito.forEach(p=>{
 mensaje+=`• ${p.nombre} x${p.cantidad} = $${p.precio*p.cantidad}\n`
 })
 
-mensaje+=`\n💰 *Total: $${this.total}*\n`
-mensaje+="\n✅ Pago realizado con éxito"
-mensaje+="\n🎮 ¡Gracias por tu compra!"
+mensaje+=`\nTotal: $${this.total}`
 
-let url=`https://wa.me/${this.telefono}?text=${encodeURIComponent(mensaje)}`
-
-window.open(url,"_blank")
+window.open(`https://wa.me/${this.telefono}?text=${encodeURIComponent(mensaje)}`)
 
 this.carrito=[]
 localStorage.removeItem("carrito")
 
-let modal=bootstrap.Modal.getInstance(document.getElementById("modalPago"))
-modal.hide()
-
-alert("Pago realizado y enviado por WhatsApp 💳📲")
+alert("Pago exitoso 💳")
 
 }
 

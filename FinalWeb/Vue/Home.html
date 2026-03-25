@@ -68,9 +68,9 @@ font-size:22px;
 
 <div>
 
-<a href="catalogo.html" class="btn btn-outline-info me-2">Catálogo</a>
-<a href="carrito.html" class="btn btn-outline-warning me-2">Carrito</a>
-<a href="soporte.html" class="btn btn-outline-light me-3">Soporte</a>
+<a href="./Catalogo.html" class="btn btn-outline-info me-2">Catálogo</a>
+<a href="./Carrito.html" class="btn btn-outline-warning me-2">Carrito</a>
+<a href="./Soporte.html" class="btn btn-outline-light me-3">Soporte</a>
 
 <button @click="logout" class="btn btn-danger">
 Cerrar sesión
@@ -94,7 +94,7 @@ Cerrar sesión
 Explora los mejores videojuegos del momento
 </p>
 
-<a href="catalogo.html" class="btn btn-info btn-lg mt-3">
+<a href="./Catalogo.html" class="btn btn-info btn-lg mt-3">
 Explorar Catálogo
 </a>
 
@@ -124,7 +124,7 @@ Explorar Catálogo
 
 <p>${{ juego.precio }}</p>
 
-<a href="catalogo.html" class="btn btn-info">
+<a href="./Catalogo.html" class="btn btn-info">
 Ver juego
 </a>
 
@@ -176,7 +176,7 @@ mounted(){
 let sesion = localStorage.getItem("sesion")
 
 if(!sesion){
-window.location="login.html"
+window.location.href = "./Login.html"
 }
 
 this.usuario = sesion
@@ -187,7 +187,7 @@ methods:{
 
 logout(){
 localStorage.removeItem("sesion")
-window.location="home.html"
+window.location.href = "./Login.html"
 }
 
 }
