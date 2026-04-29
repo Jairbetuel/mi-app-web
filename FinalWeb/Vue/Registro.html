@@ -85,7 +85,7 @@
 </div>
 
 <script>
-const SERVER = "http://localhost:3000"  // ← Cambia aquí si usas IP fija
+const SERVER = "http://192.168.1.66:3000"  // ← Cambia aquí si usas IP fija
 
 Vue.createApp({
   data() {
@@ -124,7 +124,8 @@ Vue.createApp({
           body: JSON.stringify({ nombre: this.nombre, correo: this.correo, password: this.password })
         })
 
-        if (!res.ok) throw new Error("Error del servidor")
+        const data = await res.json()
+console.log(data)
 
         this.mensaje = "Cuenta creada correctamente 🎮"
         this.tipoMensaje = "mensaje-ok"
