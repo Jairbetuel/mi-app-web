@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
@@ -12,18 +11,15 @@
 <script src="https://unpkg.com/vue@3"></script>
 
 <style>
-
 body{
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-
 background-image:url("fondo.jpg");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
-
 font-family:Segoe UI;
 }
 
@@ -87,7 +83,6 @@ font-weight:bold;
 color:cyan;
 text-decoration:none;
 }
-
 </style>
 
 </head>
@@ -104,29 +99,17 @@ text-decoration:none;
 
 <div class="mb-3">
 <label>Nombre</label>
-<input type="text"
-v-model="nombre"
-class="form-control"
-placeholder="Tu nombre completo"
-required>
+<input type="text" v-model="nombre" class="form-control" required>
 </div>
 
 <div class="mb-3">
 <label>Correo</label>
-<input type="email"
-v-model="correo"
-class="form-control"
-placeholder="correo@email.com"
-required>
+<input type="email" v-model="correo" class="form-control" required>
 </div>
 
 <div class="mb-3">
 <label>Contraseña</label>
-<input type="password"
-v-model="password"
-class="form-control"
-placeholder="Mínimo 6 caracteres"
-required>
+<input type="password" v-model="password" class="form-control" required>
 </div>
 
 <button class="btn btn-registro w-100">
@@ -163,11 +146,9 @@ tipoMensaje:""
 
 methods:{
 
-registrar(){
+async registrar(){
 
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
-
-// Validaciones
+// VALIDACIONES
 if(this.nombre.length < 3){
 this.mensaje="Nombre muy corto"
 this.tipoMensaje="mensaje-error"
@@ -186,36 +167,50 @@ this.tipoMensaje="mensaje-error"
 return
 }
 
-// Verificar duplicado
-let existe = usuarios.find(user => user.correo === this.correo)
+try{
 
-if(existe){
-this.mensaje = "Este correo ya está registrado"
-this.tipoMensaje = "mensaje-error"
-return
-}
-
-// Guardar usuario
-usuarios.push({
-nombre:this.nombre,
-correo:this.correo,
-password:this.password
+const res = await fetch("http://192.168.1.66:3000/usuarios", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+nombre: this.nombre,
+correo: this.correo,
+password: this.password
+})
 })
 
-localStorage.setItem("usuarios", JSON.stringify(usuarios))
+// 🔥 VALIDAR RESPUESTA
+if(!res.ok){
+throw new Error("Error del servidor")
+}
 
+const data = await res.text()
+console.log("Respuesta:", data)
+
+// MENSAJE OK
 this.mensaje = "Cuenta creada correctamente 🎮"
 this.tipoMensaje = "mensaje-ok"
 
-// Limpiar campos
+// LIMPIAR
 this.nombre=""
 this.correo=""
 this.password=""
 
-// Redirigir
+// REDIRECCIÓN
 setTimeout(()=>{
 window.location.href="./Login.html"
 },1500)
+
+}catch(error){
+
+console.log("ERROR:", error)
+
+this.mensaje = "Error al conectar con el servidor"
+this.tipoMensaje = "mensaje-error"
+
+}
 
 }
 

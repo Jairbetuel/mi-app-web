@@ -115,23 +115,36 @@ Iniciar sesión
 
 <script>
 
-function login(e){
+async function login(e){
 e.preventDefault()
 
 let correo = document.getElementById("correo").value
 let password = document.getElementById("password").value
 
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
+try{
 
-let usuario = usuarios.find(user =>
-user.correo === correo && user.password === password
-)
+let res = await fetch("http://192.168.1.84:3000/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+correo:correo,
+password:password
+})
+})
 
-if(usuario){
-localStorage.setItem("sesion", usuario.nombre)
+let data = await res.json()
+
+if(data){
+localStorage.setItem("sesion", data.nombre)
 window.location.href = "./Home.html"
 }else{
 document.getElementById("error").innerText = "Correo o contraseña incorrectos"
+}
+
+}catch(error){
+document.getElementById("error").innerText = "Error de conexión con el servidor"
 }
 
 }
