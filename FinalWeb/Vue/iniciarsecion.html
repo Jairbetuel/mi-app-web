@@ -107,7 +107,7 @@
 </div>
 
 <script>
-const SERVER = "http://191.168.1.66:3000"  // ← Cambia si usas IP fija, ej: "http://192.168.1.66:3000"
+const SERVER = "http://192.168.1.66:3000"  // ✔ IP correcta
 
 Vue.createApp({
   data() {
@@ -127,21 +127,26 @@ Vue.createApp({
         const res = await fetch(`${SERVER}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ correo: this.correo, password: this.password })
+          body: JSON.stringify({
+            correo: this.correo,
+            password: this.password
+          })
         })
 
         const data = await res.json()
+        console.log("RESPUESTA:", data)
 
-        if (data.ok) {
-          localStorage.setItem("sesion", data.nombre)
+        // 🔥 VALIDACIÓN CORRECTA
+        if (data && data.ok) {
+          localStorage.setItem("sesion", data.usuario.nombre)
           window.location.href = "./Home.html"
         } else {
           this.error = "Correo o contraseña incorrectos"
         }
 
       } catch (err) {
+        console.error("ERROR:", err)
         this.error = "Error de conexión con el servidor"
-        console.error(err)
       } finally {
         this.cargando = false
       }
