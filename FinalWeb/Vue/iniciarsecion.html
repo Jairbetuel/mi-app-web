@@ -107,7 +107,7 @@
 </div>
 
 <script>
-const SERVER = "http://localhost:3000"  // ← Cambia si usas IP fija, ej: "http://192.168.1.66:3000"
+const SERVER = "http://191.168.1.66:3000"  // ← Cambia si usas IP fija, ej: "http://192.168.1.66:3000"
 
 Vue.createApp({
   data() {
@@ -132,7 +132,7 @@ Vue.createApp({
 
         const data = await res.json()
 
-        if (data && data.nombre) {
+        if (data.ok) {
           localStorage.setItem("sesion", data.nombre)
           window.location.href = "./Home.html"
         } else {
