@@ -85,7 +85,7 @@
 </div>
 
 <script>
-const SERVER = "http://192.168.1.66:3000"  // ← Cambia aquí si usas IP fija
+const SERVER = "http://192.168.1.70:3000" 
 
 Vue.createApp({
   data() {
@@ -120,7 +120,7 @@ Vue.createApp({
       try {
         const res = await fetch(`${SERVER}/usuarios`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          giheaders: { "Content-Type": "application/json" },
           body: JSON.stringify({ nombre: this.nombre, correo: this.correo, password: this.password })
         })
 
