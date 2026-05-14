@@ -58,6 +58,18 @@ border-radius:10px;
 margin-bottom:30px;
 }
 
+.api-title{
+text-align:center;
+margin-top:60px;
+margin-bottom:30px;
+color:cyan;
+}
+
+.api-card img{
+height:250px;
+object-fit:cover;
+}
+
 </style>
 
 </head>
@@ -103,6 +115,7 @@ Agregar juego
 
 </div>
 
+<!-- JUEGOS LOCALES -->
 <div class="row g-4">
 
 <div class="col-md-4" v-for="(juego, index) in juegos" :key="juego.nombre">
@@ -137,6 +150,41 @@ Eliminar ❌
 
 </div>
 
+<!-- API RAWG -->
+<h2 class="api-title">🔥 Juegos populares desde API</h2>
+
+<div class="row g-4 mt-2">
+
+<div class="col-md-4" v-for="game in apiGames" :key="game.id">
+
+<div class="card api-card">
+
+<img :src="game.background_image">
+
+<div class="card-body text-center">
+
+<h5>{{ game.name }}</h5>
+
+<p class="rating">
+⭐ {{ game.rating }}
+</p>
+
+<p>
+📅 {{ game.released }}
+</p>
+
+<button class="btn btn-primary" @click="agregarApi(game)">
+Agregar al carrito
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -149,6 +197,8 @@ data(){
 return{
 
 carrito: JSON.parse(localStorage.getItem("carrito")) || [],
+
+apiGames: [],
 
 juegos: JSON.parse(localStorage.getItem("juegos")) || [
 
@@ -171,35 +221,98 @@ rating:"★★★★★"
 methods:{
 
 agregarCarrito(juego){
+
 this.carrito.push(juego)
-localStorage.setItem("carrito", JSON.stringify(this.carrito))
+
+localStorage.setItem(
+"carrito",
+JSON.stringify(this.carrito)
+)
+
 alert("Juego agregado al carrito 🎮")
+
+},
+
+agregarApi(game){
+
+const nuevoJuego = {
+
+nombre: game.name,
+precio: game.rating * 10,
+rating: "⭐ " + game.rating,
+img: game.background_image
+
+}
+
+this.carrito.push(nuevoJuego)
+
+localStorage.setItem(
+"carrito",
+JSON.stringify(this.carrito)
+)
+
+alert("Juego API agregado 🎮")
+
 },
 
 eliminarJuego(index){
+
 this.juegos.splice(index,1)
-localStorage.setItem("juegos", JSON.stringify(this.juegos))
+
+localStorage.setItem(
+"juegos",
+JSON.stringify(this.juegos)
+)
+
 },
 
 agregarJuego(){
 
-if(!this.nuevo.nombre || !this.nuevo.precio || !this.nuevo.img){
+if(
+!this.nuevo.nombre ||
+!this.nuevo.precio ||
+!this.nuevo.img
+){
 alert("Completa todos los campos")
 return
 }
 
 this.juegos.push({...this.nuevo})
 
-localStorage.setItem("juegos", JSON.stringify(this.juegos))
+localStorage.setItem(
+"juegos",
+JSON.stringify(this.juegos)
+)
 
 this.nuevo = {
+
 nombre:"",
 precio:"",
 img:"",
 rating:"★★★★★"
+
 }
 
 }
+
+},
+
+mounted(){
+
+fetch("https://api.rawg.io/api/games?key=641748c8834a4decb249e4c1665d9224")
+.then(res => res.json())
+.then(data => {
+
+console.log(data)
+
+this.apiGames = data.results.slice(0,6)
+
+})
+.catch(err => {
+
+console.error(err)
+
+})
 
 }
 
