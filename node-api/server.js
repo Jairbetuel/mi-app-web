@@ -92,7 +92,7 @@ app.post('/login', (req, res) => {
 
   const { correo, password } = req.body
 
-  console.log("LOGIN:", correo, password)
+  console.log("LOGIN:", correo)
 
   if (!correo || !password) {
     return res.status(400).json({
@@ -117,13 +117,18 @@ app.post('/login', (req, res) => {
 
         res.json({
           ok: true,
-          usuario: result[0]
+          usuario: {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            correo: result[0].correo
+          }
         })
 
       } else {
 
-        res.json({
-          ok: false
+        res.status(401).json({
+          ok: false,
+          error: "Correo o contraseña incorrectos"
         })
 
       }
@@ -153,6 +158,15 @@ app.get('/usuarios', (req, res) => {
     }
   )
 
+})
+
+// ─── RUTA PRINCIPAL ─────────────────────────────────────────────
+
+app.get('/', (req, res) => {
+  res.json({
+    ok: true,
+    mensaje: "API GameStore funcionando 🚀"
+  })
 })
 
 // ─── SERVIDOR ───────────────────────────────────────────────────
