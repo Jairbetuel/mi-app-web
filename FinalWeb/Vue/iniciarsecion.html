@@ -107,7 +107,7 @@
 </div>
 
 <script>
-const SERVER = "http://192.168.1.66:3000"  // ✔ IP correcta
+const SERVER = "https://gamestore-api-fixif.onrender.com" // cambiar ip
 
 Vue.createApp({
   data() {
@@ -124,7 +124,7 @@ Vue.createApp({
   this.cargando = true
 
   try {
-    const res = await fetch("http://192.168.1.66:3000/login", {
+    const res = await fetch("https://gamestore-api-fixif.onrender.com" , { 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
