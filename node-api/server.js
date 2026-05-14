@@ -10,11 +10,11 @@ app.use(express.json())
 // ─── CONEXIÓN MYSQL ─────────────────────────────────────────────
 
 const db = mysql.createConnection({
-  host: 'mysql.railway.internal',
+  host: 'yamanote.proxy.rlwy.net',
   user: 'root',
   password: 'UXswurJQiMGtVRbYMDfYncpvpmwhjxEZ',
   database: 'railway',
-  port: 3306
+  port: 53761
 })
 
 db.connect((err) => {
