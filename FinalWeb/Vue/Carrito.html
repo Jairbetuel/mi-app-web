@@ -97,9 +97,11 @@ Tu carrito está vacío 😢
 
 <div v-else>
 
-<div class="card p-3"
+<div
+class="card p-3"
 v-for="(p,index) in carrito"
-:key="index">
+:key="index"
+>
 
 <div class="d-flex justify-content-between align-items-center">
 
@@ -113,7 +115,8 @@ v-for="(p,index) in carrito"
 
 <button
 @click="disminuir(index)"
-class="btn btn-secondary btn-cantidad">
+class="btn btn-secondary btn-cantidad"
+>
 -
 </button>
 
@@ -123,7 +126,8 @@ class="btn btn-secondary btn-cantidad">
 
 <button
 @click="aumentar(index)"
-class="btn btn-secondary btn-cantidad">
+class="btn btn-secondary btn-cantidad"
+>
 +
 </button>
 
@@ -133,7 +137,8 @@ class="btn btn-secondary btn-cantidad">
 
 <button
 @click="eliminar(index)"
-class="btn btn-danger">
+class="btn btn-danger"
+>
 Eliminar
 </button>
 
@@ -145,7 +150,7 @@ Eliminar
 <div class="paypal-box text-center">
 
 <p class="total">
-Total: ${{total.toFixed(2)}}
+Total: ${{ total.toFixed(2) }}
 </p>
 
 <img
@@ -158,14 +163,14 @@ class="mb-3"
 💳 Pago seguro con PayPal
 </h4>
 
+<!-- BOTÓN PAYPAL -->
 <div id="paypal-button-container"></div>
 
 <button
 class="btn btn-outline-danger mt-4"
-@click="vaciarCarrito">
-
+@click="vaciarCarrito"
+>
 🧹 Vaciar carrito
-
 </button>
 
 </div>
@@ -196,12 +201,30 @@ mounted(){
 
 this.carrito.forEach(p=>{
 
-if(!p.cantidad)
-p.cantidad=1
+if(!p.cantidad){
+
+p.cantidad = 1
+
+}
 
 })
 
+this.guardar()
+
+// ESPERAR A QUE PAYPAL CARGUE
+setTimeout(()=>{
+
+if(typeof paypal !== "undefined"){
+
 this.renderPaypal()
+
+}else{
+
+console.error("PayPal no cargó")
+
+}
+
+},1000)
 
 },
 
@@ -210,8 +233,11 @@ computed:{
 total(){
 
 return this.carrito.reduce(
-(s,p)=>s+(p.precio*p.cantidad),
+
+(s,p)=>s + (Number(p.precio) * Number(p.cantidad)),
+
 0
+
 )
 
 }
@@ -230,7 +256,7 @@ this.guardar()
 
 disminuir(i){
 
-if(this.carrito[i].cantidad>1){
+if(this.carrito[i].cantidad > 1){
 
 this.carrito[i].cantidad--
 
@@ -250,17 +276,22 @@ this.guardar()
 
 vaciarCarrito(){
 
-this.carrito=[]
+this.carrito = []
 
 localStorage.removeItem("carrito")
+
+location.reload()
 
 },
 
 guardar(){
 
 localStorage.setItem(
+
 "carrito",
+
 JSON.stringify(this.carrito)
+
 )
 
 },
@@ -269,13 +300,22 @@ renderPaypal(){
 
 paypal.Buttons({
 
+style:{
+
+layout:'vertical',
+color:'blue',
+shape:'rect',
+label:'paypal'
+
+},
+
 createOrder: (data, actions) => {
 
 return actions.order.create({
 
-purchase_units: [{
+purchase_units:[{
 
-amount: {
+amount:{
 
 value: this.total.toFixed(2)
 
@@ -292,17 +332,28 @@ onApprove: (data, actions) => {
 return actions.order.capture().then(details => {
 
 alert(
+
 "✅ Pago completado por " +
+
 details.payer.name.given_name
+
 )
 
-this.carrito=[]
+this.carrito = []
 
 localStorage.removeItem("carrito")
 
 location.reload()
 
 })
+
+},
+
+onError: (err) => {
+
+console.error(err)
+
+alert("❌ Error con PayPal")
 
 }
 
