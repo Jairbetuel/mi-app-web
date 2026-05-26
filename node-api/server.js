@@ -7,7 +7,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// ─── CONEXIÓN MYSQL ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// MYSQL RAILWAY CLOUD
+// ─────────────────────────────────────────────
 
 const db = mysql.createConnection({
   host: 'yamanote.proxy.rlwy.net',
@@ -20,14 +22,20 @@ const db = mysql.createConnection({
 db.connect((err) => {
 
   if (err) {
+
     console.log("❌ Error conexión MySQL:", err.message)
+
   } else {
-    console.log("✅ Conectado a MySQL")
+
+    console.log("✅ Conectado a Railway MySQL")
+
   }
 
 })
 
-// ─── REGISTRO ───────────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// REGISTRO
+// ─────────────────────────────────────────────
 
 app.post('/usuarios', (req, res) => {
 
@@ -36,10 +44,12 @@ app.post('/usuarios', (req, res) => {
   console.log("REGISTRO:", nombre, correo)
 
   if (!nombre || !correo || !password) {
+
     return res.status(400).json({
       ok: false,
       error: "Faltan datos"
     })
+
   }
 
   db.query(
@@ -48,34 +58,45 @@ app.post('/usuarios', (req, res) => {
     (err, result) => {
 
       if (err) {
+
         return res.status(500).json({
           ok: false,
-          error: "Error servidor"
+          error: "Error del servidor"
         })
+
       }
 
       if (result.length > 0) {
+
         return res.status(409).json({
           ok: false,
           error: "Correo ya registrado"
         })
+
       }
 
       db.query(
-        'INSERT INTO usuarios(nombre, correo, password) VALUES (?, ?, ?)',
-        [nombre, correo, password],
+        'INSERT INTO usuarios(nombre, correo, password, rol) VALUES (?, ?, ?, ?)',
+        [
+          nombre,
+          correo,
+          password,
+          'usuario'
+        ],
         (err) => {
 
           if (err) {
+
             return res.status(500).json({
               ok: false,
               error: err.message
             })
+
           }
 
           res.json({
             ok: true,
-            mensaje: "Usuario creado"
+            mensaje: "Usuario creado correctamente"
           })
 
         }
@@ -86,7 +107,9 @@ app.post('/usuarios', (req, res) => {
 
 })
 
-// ─── LOGIN ──────────────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// LOGIN
+// ─────────────────────────────────────────────
 
 app.post('/login', (req, res) => {
 
@@ -95,10 +118,12 @@ app.post('/login', (req, res) => {
   console.log("LOGIN:", correo)
 
   if (!correo || !password) {
+
     return res.status(400).json({
       ok: false,
       error: "Faltan datos"
     })
+
   }
 
   db.query(
@@ -107,50 +132,62 @@ app.post('/login', (req, res) => {
     (err, result) => {
 
       if (err) {
+
         return res.status(500).json({
           ok: false,
-          error: "Error servidor"
+          error: "Error del servidor"
         })
+
       }
 
       if (result.length > 0) {
 
-        res.json({
+        return res.json({
+
           ok: true,
+
           usuario: {
+
             id: result[0].id,
             nombre: result[0].nombre,
-            correo: result[0].correo
+            correo: result[0].correo,
+            rol: result[0].rol
+
           }
-        })
 
-      } else {
-
-        res.status(401).json({
-          ok: false,
-          error: "Correo o contraseña incorrectos"
         })
 
       }
+
+      res.status(401).json({
+
+        ok: false,
+        error: "Correo o contraseña incorrectos"
+
+      })
 
     }
   )
 
 })
 
-// ─── LISTAR USUARIOS ────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// LISTAR USUARIOS
+// ─────────────────────────────────────────────
 
 app.get('/usuarios', (req, res) => {
 
   db.query(
-    'SELECT id, nombre, correo FROM usuarios',
+    'SELECT id, nombre, correo, rol FROM usuarios',
     (err, result) => {
 
       if (err) {
+
         return res.status(500).json({
           ok: false,
           error: err.message
         })
+
       }
 
       res.json(result)
@@ -160,17 +197,25 @@ app.get('/usuarios', (req, res) => {
 
 })
 
-// ─── RUTA PRINCIPAL ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// API TEST
+// ─────────────────────────────────────────────
 
 app.get('/', (req, res) => {
+
   res.json({
     ok: true,
     mensaje: "API GameStore funcionando 🚀"
   })
+
 })
 
-// ─── SERVIDOR ───────────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// SERVIDOR
+// ─────────────────────────────────────────────
 
 app.listen(process.env.PORT || 3000, () => {
+
   console.log("🚀 Servidor corriendo")
+
 })

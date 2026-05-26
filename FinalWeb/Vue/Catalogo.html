@@ -14,60 +14,145 @@
 <style>
 
 body{
-background:#0b0b0b;
+background:
+linear-gradient(rgba(0,0,0,.90),rgba(0,0,0,.90)),
+url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
 color:white;
 font-family:Segoe UI;
+min-height:100vh;
+}
+
+.navbar{
+background:#050505 !important;
+box-shadow:0 0 20px cyan;
+}
+
+.navbar-brand{
+font-weight:bold;
+font-size:28px;
+color:cyan !important;
+}
+
+.admin-badge{
+background:linear-gradient(45deg,#ff00ff,#00ffff);
+padding:8px 15px;
+border-radius:30px;
+font-weight:bold;
+font-size:14px;
 }
 
 .titulo{
 text-align:center;
 margin-top:40px;
 margin-bottom:30px;
+font-size:40px;
+font-weight:bold;
+color:cyan;
+text-shadow:0 0 15px cyan;
+}
+
+.form-box{
+background:rgba(20,20,20,.95);
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 25px rgba(0,255,255,.4);
+margin-bottom:40px;
+border:1px solid rgba(0,255,255,.3);
+}
+
+.form-control{
+background:#111;
+border:none;
+color:white;
+}
+
+.form-control:focus{
+background:#111;
+color:white;
+box-shadow:0 0 12px cyan;
 }
 
 .card{
-background:#141414;
-border:none;
-transition:0.3s;
+background:rgba(18,18,18,.95);
+border-radius:20px;
+overflow:hidden;
+border:1px solid rgba(0,255,255,.15);
+transition:.4s;
+height:100%;
 }
 
 .card:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px cyan;
+transform:translateY(-8px);
+box-shadow:0 0 30px cyan;
 }
 
 .card img{
-height:200px;
+height:240px;
 object-fit:cover;
 }
 
-.precio{
-color:#00ffff;
+.card-body{
+padding:25px;
+}
+
+.game-title{
+font-size:24px;
 font-weight:bold;
-font-size:18px;
+margin-bottom:10px;
+}
+
+.game-desc{
+font-size:14px;
+opacity:.85;
+margin-bottom:15px;
 }
 
 .rating{
 color:gold;
+font-size:18px;
+font-weight:bold;
 }
 
-.form-box{
-background:#141414;
-padding:20px;
-border-radius:10px;
-margin-bottom:30px;
+.precio{
+font-size:28px;
+font-weight:bold;
+color:#00ffff;
+}
+
+.btn-cart{
+background:linear-gradient(45deg,#00ffff,#0099ff);
+border:none;
+font-weight:bold;
+color:black;
+width:100%;
+border-radius:15px;
+}
+
+.btn-cart:hover{
+transform:scale(1.03);
+}
+
+.btn-delete{
+width:100%;
+margin-top:10px;
+border-radius:15px;
 }
 
 .api-title{
-text-align:center;
-margin-top:60px;
+margin-top:70px;
 margin-bottom:30px;
+text-align:center;
 color:cyan;
+font-size:36px;
+font-weight:bold;
+text-shadow:0 0 15px cyan;
 }
 
-.api-card img{
-height:250px;
-object-fit:cover;
+.api-card{
+height:100%;
 }
 
 </style>
@@ -78,18 +163,36 @@ object-fit:cover;
 
 <div id="app">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-black">
+<nav class="navbar navbar-dark">
 <div class="container">
 
-<a class="navbar-brand">🎮 GameStore</a>
+<a class="navbar-brand">
+🎮 GameStore
+</a>
 
-<div>
-<a href="./Home.html" class="btn btn-outline-light me-2">Inicio</a>
+<div class="d-flex align-items-center gap-2">
 
-<a href="./Carrito.html" class="btn btn-warning">
+<span
+v-if="esAdmin"
+class="admin-badge"
+>
+👑 ADMIN
+</span>
+
+<a
+href="./Home.html"
+class="btn btn-outline-light"
+>
+Inicio
+</a>
+
+<a
+href="./Carrito.html"
+class="btn btn-warning"
+>
 🛒 Carrito ({{ carrito.length }})
 </a>
+
 </div>
 
 </div>
@@ -97,28 +200,61 @@ object-fit:cover;
 
 <div class="container">
 
-<h2 class="titulo">🎮 Catálogo de Videojuegos</h2>
+<h2 class="titulo">
+🎮 Catálogo de Videojuegos
+</h2>
 
-<!-- FORM AGREGAR JUEGO -->
-<div class="form-box">
+<!-- SOLO ADMIN -->
+<div
+class="form-box"
+v-if="esAdmin"
+>
 
-<h4>➕ Agregar nuevo juego</h4>
+<h3 class="mb-4">
+➕ Agregar nuevo juego
+</h3>
 
-<input v-model="nuevo.nombre" class="form-control mb-2" placeholder="Nombre">
-<input v-model="nuevo.precio" type="number" class="form-control mb-2" placeholder="Precio">
-<input v-model="nuevo.img" class="form-control mb-2" placeholder="URL Imagen">
-<input v-model="nuevo.rating" class="form-control mb-2" placeholder="Rating (★★★★★)">
+<input
+v-model="nuevo.nombre"
+class="form-control mb-3"
+placeholder="Nombre del juego"
+>
 
-<button class="btn btn-success" @click="agregarJuego">
+<input
+v-model="nuevo.precio"
+type="number"
+class="form-control mb-3"
+placeholder="Precio"
+>
+
+<input
+v-model="nuevo.img"
+class="form-control mb-3"
+placeholder="URL Imagen"
+>
+
+<input
+v-model="nuevo.rating"
+class="form-control mb-3"
+placeholder="★★★★★"
+>
+
+<button
+class="btn btn-success w-100"
+@click="agregarJuego"
+>
 Agregar juego
 </button>
 
 </div>
 
-<!-- JUEGOS LOCALES -->
 <div class="row g-4">
 
-<div class="col-md-4" v-for="(juego, index) in juegos" :key="juego.nombre">
+<div
+class="col-md-4"
+v-for="(juego,index) in juegos"
+:key="juego.nombre"
+>
 
 <div class="card">
 
@@ -126,19 +262,34 @@ Agregar juego
 
 <div class="card-body text-center">
 
-<h5>{{ juego.nombre }}</h5>
+<h4 class="game-title">
+{{ juego.nombre }}
+</h4>
 
-<p class="rating">{{ juego.rating }}</p>
+<p class="game-desc">
+🎮 Nuevo compatible solo para Xbox
+</p>
 
-<p class="precio">${{ juego.precio }}</p>
+<p class="rating">
+{{ juego.rating }}
+</p>
 
-<button class="btn btn-info mb-2" @click="agregarCarrito(juego)">
-Agregar al carrito
+<p class="precio">
+${{ juego.precio }}
+</p>
+
+<button
+class="btn btn-cart"
+@click="agregarCarrito(juego)"
+>
+Agregar al carrito 🎮
 </button>
 
-<br>
-
-<button class="btn btn-danger btn-sm" @click="eliminarJuego(index)">
+<button
+v-if="esAdmin"
+class="btn btn-danger btn-delete"
+@click="eliminarJuego(index)"
+>
 Eliminar ❌
 </button>
 
@@ -150,12 +301,17 @@ Eliminar ❌
 
 </div>
 
-<!-- API RAWG -->
-<h2 class="api-title">🔥 Juegos populares desde API</h2>
+<h2 class="api-title">
+🔥 Juegos populares desde API
+</h2>
 
 <div class="row g-4 mt-2">
 
-<div class="col-md-4" v-for="game in apiGames" :key="game.id">
+<div
+class="col-md-4"
+v-for="game in apiGames"
+:key="game.id"
+>
 
 <div class="card api-card">
 
@@ -163,21 +319,28 @@ Eliminar ❌
 
 <div class="card-body text-center">
 
-<h5>{{ game.name }}</h5>
+<h4 class="game-title">
+{{ game.name }}
+</h4>
+
+<p class="game-desc">
+🎮 Nuevo compatible solo para Xbox
+</p>
 
 <p class="rating">
 ⭐ {{ game.rating }}
 </p>
 
-<p>
-📅 {{ game.released }}
+<p class="precio">
+${{ (game.rating * 10).toFixed(2) }}
 </p>
 
-<button class="btn btn-primary" @click="agregarApi(game)">
-Agregar al carrito
+<button
+class="btn btn-cart"
+@click="agregarApi(game)"
+>
+Agregar al carrito 🎮
 </button>
-
-</div>
 
 </div>
 
@@ -194,17 +357,45 @@ Agregar al carrito
 Vue.createApp({
 
 data(){
+
 return{
 
-carrito: JSON.parse(localStorage.getItem("carrito")) || [],
+// rol del usuario
+esAdmin: localStorage.getItem("rol") === "admin",
+
+carrito:
+JSON.parse(
+localStorage.getItem("carrito")
+) || [],
 
 apiGames: [],
 
-juegos: JSON.parse(localStorage.getItem("juegos")) || [
+// juegos guardados localmente
+juegos:
+JSON.parse(
+localStorage.getItem("juegos")
+) || [
 
-{nombre:"Elden Ring",precio:39.99,rating:"★★★★★",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"},
-{nombre:"Resident Evil 4",precio:45,rating:"★★★★★",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"},
-{nombre:"Star Wars Jedi Survivor",precio:59.99,rating:"★★★★☆",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"}
+{
+nombre:"Elden Ring",
+precio:39.99,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
+},
+
+{
+nombre:"Resident Evil 4",
+precio:45,
+rating:"★★★★★",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"
+},
+
+{
+nombre:"Star Wars Jedi Survivor",
+precio:59.99,
+rating:"★★★★☆",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"
+}
 
 ],
 
@@ -216,31 +407,40 @@ rating:"★★★★★"
 }
 
 }
+
 },
 
 methods:{
 
+// agregar al carrito
 agregarCarrito(juego){
 
-this.carrito.push(juego)
+this.carrito.push({
+
+...juego,
+cantidad:1
+
+})
 
 localStorage.setItem(
 "carrito",
 JSON.stringify(this.carrito)
 )
 
-alert("Juego agregado al carrito 🎮")
+alert("🎮 Juego agregado al carrito")
 
 },
 
+// agregar desde API
 agregarApi(game){
 
 const nuevoJuego = {
 
 nombre: game.name,
-precio: game.rating * 10,
+precio: (game.rating * 10).toFixed(2),
 rating: "⭐ " + game.rating,
-img: game.background_image
+img: game.background_image,
+cantidad:1
 
 }
 
@@ -251,11 +451,20 @@ localStorage.setItem(
 JSON.stringify(this.carrito)
 )
 
-alert("Juego API agregado 🎮")
+alert("🎮 Juego API agregado")
 
 },
 
+// eliminar SOLO admin
 eliminarJuego(index){
+
+if(!this.esAdmin){
+
+alert("No tienes permisos")
+
+return
+
+}
 
 this.juegos.splice(index,1)
 
@@ -264,20 +473,43 @@ localStorage.setItem(
 JSON.stringify(this.juegos)
 )
 
+alert("❌ Juego eliminado")
+
 },
 
+// agregar juego SOLO admin
 agregarJuego(){
+
+if(!this.esAdmin){
+
+alert("Solo el admin puede agregar")
+
+return
+
+}
 
 if(
 !this.nuevo.nombre ||
 !this.nuevo.precio ||
 !this.nuevo.img
 ){
-alert("Completa todos los campos")
+
+alert(
+"Completa todos los campos"
+)
+
 return
+
 }
 
-this.juegos.push({...this.nuevo})
+this.juegos.push({
+
+nombre:this.nuevo.nombre,
+precio:this.nuevo.precio,
+img:this.nuevo.img,
+rating:this.nuevo.rating
+
+})
 
 localStorage.setItem(
 "juegos",
@@ -293,22 +525,30 @@ rating:"★★★★★"
 
 }
 
+alert(
+"✅ Juego agregado correctamente"
+)
+
 }
 
 },
 
 mounted(){
 
-fetch("https://api.rawg.io/api/games?key=641748c8834a4decb249e4c1665d9224")
-.then(res => res.json())
-.then(data => {
+fetch(
+"https://api.rawg.io/api/games?key=641748c8834a4decb249e4c1665d9224"
+)
 
-console.log(data)
+.then(res=>res.json())
 
-this.apiGames = data.results.slice(0,6)
+.then(data=>{
+
+this.apiGames =
+data.results.slice(0,6)
 
 })
-.catch(err => {
+
+.catch(err=>{
 
 console.error(err)
 

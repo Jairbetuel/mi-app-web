@@ -2,89 +2,89 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Login - GameStore</title>
+<title>Login - GameStore</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/vue@3"></script>
 
-  <style>
+<style>
 
-    body{
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background-image:url("fondo.jpg");
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
-      font-family:Segoe UI;
-    }
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background-image:url("fondo.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+font-family:Segoe UI;
+}
 
-    body::before{
-      content:"";
-      position:absolute;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.75);
-    }
+body::before{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.75);
+}
 
-    .login-box{
-      position:relative;
-      background:rgba(20,20,20,0.95);
-      padding:40px;
-      border-radius:15px;
-      width:400px;
-      box-shadow:0 0 25px cyan;
-      color:white;
-    }
+.login-box{
+position:relative;
+background:rgba(20,20,20,0.95);
+padding:40px;
+border-radius:15px;
+width:400px;
+box-shadow:0 0 25px cyan;
+color:white;
+}
 
-    h3{
-      text-align:center;
-      margin-bottom:20px;
-      color:cyan;
-    }
+h3{
+text-align:center;
+margin-bottom:20px;
+color:cyan;
+}
 
-    .form-control{
-      background:#111;
-      border:none;
-      color:white;
-    }
+.form-control{
+background:#111;
+border:none;
+color:white;
+}
 
-    .form-control:focus{
-      box-shadow:0 0 10px cyan;
-      background:#111;
-      color:white;
-    }
+.form-control:focus{
+box-shadow:0 0 10px cyan;
+background:#111;
+color:white;
+}
 
-    .btn-login{
-      background:cyan;
-      border:none;
-      font-weight:bold;
-      color:#000;
-      transition:0.3s;
-    }
+.btn-login{
+background:cyan;
+border:none;
+font-weight:bold;
+color:#000;
+transition:0.3s;
+}
 
-    .btn-login:hover{
-      background:#00bcd4;
-      transform:scale(1.03);
-    }
+.btn-login:hover{
+background:#00bcd4;
+transform:scale(1.03);
+}
 
-    .error-msg{
-      color:#ff4d4d;
-      font-weight:bold;
-      text-align:center;
-    }
+.error-msg{
+color:#ff4d4d;
+font-weight:bold;
+text-align:center;
+}
 
-    .link-registro{
-      color:cyan;
-      text-decoration:none;
-    }
+.link-registro{
+color:cyan;
+text-decoration:none;
+}
 
-  </style>
+</style>
 
 </head>
 
@@ -92,147 +92,174 @@
 
 <div id="app">
 
-  <div class="login-box">
+<div class="login-box">
 
-    <h3>🎮 GameStore</h3>
+<h3>🎮 GameStore</h3>
 
-    <form @submit.prevent="login">
+<form @submit.prevent="login">
 
-      <div class="mb-3">
+<div class="mb-3">
 
-        <label>Correo</label>
+<label>Correo</label>
 
-        <input
-          type="email"
-          v-model="correo"
-          class="form-control"
-          placeholder="correo@email.com"
-          required
-        >
+<input
+type="email"
+v-model="correo"
+class="form-control"
+placeholder="correo@email.com"
+required
+>
 
-      </div>
+</div>
 
-      <div class="mb-3">
+<div class="mb-3">
 
-        <label>Contraseña</label>
+<label>Contraseña</label>
 
-        <input
-          type="password"
-          v-model="password"
-          class="form-control"
-          placeholder="••••••"
-          required
-        >
+<input
+type="password"
+v-model="password"
+class="form-control"
+placeholder="••••••"
+required
+>
 
-      </div>
+</div>
 
-      <button class="btn btn-login w-100" :disabled="cargando">
+<button
+class="btn btn-login w-100"
+:disabled="cargando"
+>
 
-        <span v-if="cargando">
-          Cargando...
-        </span>
+<span v-if="cargando">
+Cargando...
+</span>
 
-        <span v-else>
-          Iniciar sesión 🎮
-        </span>
+<span v-else>
+Iniciar sesión 🎮
+</span>
 
-      </button>
+</button>
 
-      <p class="error-msg mt-3">
-        {{ error }}
-      </p>
+<p class="error-msg mt-3">
+{{ error }}
+</p>
 
-    </form>
+</form>
 
-    <div class="text-center mt-3">
+<div class="text-center mt-3">
 
-      <a href="./Registro.html" class="link-registro">
-        ¿No tienes cuenta? Regístrate
-      </a>
+<a
+href="./Registro.html"
+class="link-registro"
+>
+¿No tienes cuenta? Regístrate
+</a>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
 </div>
 
 <script>
 
+// BACKEND EN RENDER
 const SERVER = "https://gamestore-api-fxif.onrender.com"
 
 Vue.createApp({
 
-  data() {
-    return {
+data() {
 
-      correo: "",
-      password: "",
-      error: "",
-      cargando: false
+return {
 
-    }
-  },
+correo: "",
+password: "",
+error: "",
+cargando: false
 
-  methods: {
+}
 
-    async login() {
+},
 
-      this.error = ""
-      this.cargando = true
+mounted(){
 
-      try {
+// limpiar datos viejos
+localStorage.removeItem("sesion")
+localStorage.removeItem("rol")
 
-        const res = await fetch(`${SERVER}/login`, {
+},
 
-          method: "POST",
+methods: {
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+async login() {
 
-          body: JSON.stringify({
+this.error = ""
+this.cargando = true
 
-            correo: this.correo.trim(),
-            password: this.password.trim()
+try {
 
-          })
+const res = await fetch(`${SERVER}/login`, {
 
-        })
+method: "POST",
 
-        const data = await res.json()
+headers: {
+"Content-Type": "application/json"
+},
 
-        console.log("RESPUESTA:", data)
+body: JSON.stringify({
 
-        if (res.ok && data.ok) {
+correo: this.correo.trim(),
+password: this.password.trim()
 
-          localStorage.setItem(
-            "sesion",
-            data.usuario.nombre
-          )
+})
 
-          window.location.href = "./Home.html"
+})
 
-        } else {
+const data = await res.json()
 
-          this.error = data.error || "Correo o contraseña incorrectos"
+console.log("RESPUESTA:", data)
 
-        }
+if(res.ok && data.ok){
 
-      } catch (err) {
+// guardar sesión
+localStorage.setItem(
+"sesion",
+data.usuario.nombre
+)
 
-        console.error(err)
+// guardar rol
+localStorage.setItem(
+"rol",
+data.usuario.rol
+)
 
-        this.error = "Error de conexión con el servidor"
+window.location.href="./Home.html"
 
-      } finally {
+}else{
 
-        this.cargando = false
+this.error =
+data.error ||
+"Correo o contraseña incorrectos"
 
-      }
+}
 
-    }
+}catch(err){
 
-  }
+console.error(err)
+
+this.error =
+"Error de conexión con el servidor"
+
+}finally{
+
+this.cargando = false
+
+}
+
+}
+
+}
 
 }).mount("#app")
 

@@ -1,119 +1,442 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameStore</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3"></script>
-  <style>
-    body {
-      background: #0b0b0b;
-      color: white;
-      font-family: Segoe UI;
-    }
-    .hero {
-      height: 70vh;
-      background-image: url("fondo.jpg");
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 55px;
-      text-shadow: 0 0 20px cyan;
-    }
-    .card {
-      background: #141414;
-      border: none;
-      transition: 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px cyan;
-    }
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 22px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GameStore</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/vue@3"></script>
+
+<style>
+
+body{
+background:
+linear-gradient(rgba(0,0,0,.92),rgba(0,0,0,.95)),
+url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+color:white;
+font-family:Segoe UI;
+overflow-x:hidden;
+}
+
+.navbar{
+background:#050505 !important;
+box-shadow:0 0 20px cyan;
+padding:15px;
+}
+
+.navbar-brand{
+font-size:30px;
+font-weight:bold;
+color:cyan !important;
+text-shadow:0 0 12px cyan;
+}
+
+.admin-badge{
+background:linear-gradient(45deg,#ff00ff,#00ffff);
+padding:8px 16px;
+border-radius:30px;
+font-weight:bold;
+box-shadow:0 0 15px cyan;
+}
+
+.hero{
+min-height:85vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:50px;
+}
+
+.hero-box{
+background:rgba(20,20,20,.85);
+padding:50px;
+border-radius:25px;
+max-width:900px;
+width:100%;
+backdrop-filter:blur(10px);
+box-shadow:0 0 40px rgba(0,255,255,.35);
+border:1px solid rgba(0,255,255,.25);
+}
+
+.hero h1{
+font-size:65px;
+font-weight:bold;
+color:cyan;
+text-shadow:0 0 25px cyan;
+}
+
+.hero p{
+font-size:22px;
+opacity:.9;
+margin-top:15px;
+}
+
+.btn-explorar{
+margin-top:20px;
+background:linear-gradient(45deg,#00ffff,#008cff);
+border:none;
+padding:14px 30px;
+font-size:20px;
+font-weight:bold;
+border-radius:20px;
+color:black;
+}
+
+.btn-explorar:hover{
+transform:scale(1.05);
+}
+
+.section-title{
+text-align:center;
+font-size:45px;
+font-weight:bold;
+color:cyan;
+margin-bottom:50px;
+text-shadow:0 0 20px cyan;
+}
+
+.card{
+background:rgba(20,20,20,.92);
+border:none;
+border-radius:25px;
+overflow:hidden;
+transition:.4s;
+height:100%;
+box-shadow:0 0 15px rgba(0,255,255,.15);
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 35px cyan;
+}
+
+.card img{
+height:260px;
+object-fit:cover;
+}
+
+.card-body{
+padding:25px;
+}
+
+.game-title{
+font-size:26px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.game-desc{
+font-size:15px;
+opacity:.85;
+margin-bottom:15px;
+}
+
+.precio{
+font-size:28px;
+font-weight:bold;
+color:#00ffff;
+}
+
+.btn-game{
+width:100%;
+border:none;
+border-radius:18px;
+background:linear-gradient(45deg,#00ffff,#008cff);
+font-weight:bold;
+color:black;
+padding:12px;
+}
+
+.map-section{
+margin-top:90px;
+}
+
+.map-box{
+background:rgba(20,20,20,.9);
+padding:30px;
+border-radius:25px;
+box-shadow:0 0 30px rgba(0,255,255,.2);
+}
+
+.map-title{
+font-size:38px;
+text-align:center;
+color:cyan;
+margin-bottom:25px;
+text-shadow:0 0 15px cyan;
+}
+
+iframe{
+border-radius:20px;
+width:100%;
+height:450px;
+border:none;
+}
+
+footer{
+margin-top:70px;
+background:#050505;
+padding:40px;
+text-align:center;
+box-shadow:0 0 20px cyan;
+}
+
+footer h4{
+color:cyan;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <div id="app">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-    <div class="container">
-      <a class="navbar-brand">🎮 GameStore</a>
-      <div>
-        <a href="./Catalogo.html" class="btn btn-outline-info me-2">Catálogo</a>
-        <a href="./Carrito.html" class="btn btn-outline-warning me-2">Carrito</a>
-        <a href="./Soporte.html" class="btn btn-outline-light me-3">Soporte</a>
-        <button @click="logout" class="btn btn-danger">Cerrar sesión</button>
-      </div>
-    </div>
-  </nav>
+<nav class="navbar navbar-expand-lg navbar-dark">
+<div class="container">
 
-  <section class="hero">
-    <div>
-      <h1>Bienvenido {{ usuario }} 🎮</h1>
-      <p class="lead">Explora los mejores videojuegos del momento</p>
-      <a href="./Catalogo.html" class="btn btn-info btn-lg mt-3">Explorar Catálogo</a>
-    </div>
-  </section>
+<a class="navbar-brand">
+🎮 GameStore
+</a>
 
-  <div class="container mt-5">
-    <h2 class="text-center mb-4">🔥 Juegos Destacados</h2>
-    <div class="row g-4">
-      <div class="col-md-4" v-for="juego in juegos" :key="juego.nombre">
-        <div class="card text-center">
-          <img :src="juego.img" class="card-img-top">
-          <div class="card-body">
-            <h5>{{ juego.nombre }}</h5>
-            <p>${{ juego.precio }}</p>
-            <a href="./Catalogo.html" class="btn btn-info">Ver juego</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="d-flex align-items-center gap-2">
 
-  <footer class="text-center mt-5 p-4 bg-black">
-    <p>© 2026 GameStore - Tienda de videojuegos</p>
-  </footer>
+<span
+v-if="esAdmin"
+class="admin-badge"
+>
+👑 ADMIN
+</span>
+
+<a href="./Catalogo.html" class="btn btn-outline-info">
+Catálogo
+</a>
+
+<a href="./Carrito.html" class="btn btn-outline-warning">
+Carrito
+</a>
+
+<a href="./Soporte.html" class="btn btn-outline-light">
+Soporte
+</a>
+
+<button
+@click="logout"
+class="btn btn-danger"
+>
+Cerrar sesión
+</button>
+
+</div>
+
+</div>
+</nav>
+
+<section class="hero">
+
+<div class="hero-box">
+
+<h1>
+Bienvenido {{ usuario }} 🎮
+</h1>
+
+<p>
+Explora videojuegos increíbles, ofertas exclusivas y vive la experiencia gamer definitiva.
+</p>
+
+<a
+href="./Catalogo.html"
+class="btn btn-explorar"
+>
+Explorar catálogo 🚀
+</a>
+
+</div>
+
+</section>
+
+<div class="container">
+
+<h2 class="section-title">
+🔥 Juegos destacados
+</h2>
+
+<div class="row g-4">
+
+<div
+class="col-md-4"
+v-for="juego in juegos"
+:key="juego.nombre"
+>
+
+<div class="card text-center">
+
+<img
+:src="juego.img"
+class="card-img-top"
+>
+
+<div class="card-body">
+
+<h4 class="game-title">
+{{ juego.nombre }}
+</h4>
+
+<p class="game-desc">
+🎮 Nuevo compatible solo para Xbox
+</p>
+
+<p class="precio">
+${{ juego.precio }}
+</p>
+
+<a
+href="./Catalogo.html"
+class="btn btn-game"
+>
+Ver juego 🎮
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="map-section">
+
+<div class="map-box">
+
+<h2 class="map-title">
+📍 Nuestra tienda física
+</h2>
+
+<p class="text-center mb-4">
+205 Morelos, San Sebastián, Oaxaca
+</p>
+
+<iframe
+src="https://www.google.com/maps?q=205+Morelos+San+Sebastián+Oaxaca&output=embed"
+loading="lazy">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+<footer>
+
+<h4>
+🎮 GameStore
+</h4>
+
+<p>
+Tu mejor tienda de videojuegos físicos y digitales
+</p>
+
+<p>
+📍 205 Morelos, San Sebastián, Oaxaca
+</p>
+
+<p>
+© 2026 GameStore - Todos los derechos reservados
+</p>
+
+</footer>
 
 </div>
 
 <script>
+
 Vue.createApp({
-  data() {
-    return {
-      usuario: "",
-      juegos: [
-        { nombre: "Elden Ring", precio: 39.99, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" },
-        { nombre: "Resident Evil 4", precio: 45, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg" },
-        { nombre: "Star Wars Jedi Survivor", precio: 59.99, img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg" }
-      ]
-    }
-  },
-  mounted() {
-    const sesion = localStorage.getItem("sesion")
-    if (!sesion) {
-      window.location.href = "./iniciarsecion.html"   // ← CORREGIDO
-      return
-    }
-    this.usuario = sesion
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem("sesion")
-      window.location.href = "./iniciarsecion.html"   // ← CORREGIDO
-    }
-  }
+
+data(){
+
+return{
+
+usuario:"",
+
+// rol admin
+esAdmin:
+localStorage.getItem("rol")
+=== "admin",
+
+juegos:[
+
+{
+nombre:"Elden Ring",
+precio:39.99,
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
+},
+
+{
+nombre:"Resident Evil 4",
+precio:45,
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"
+},
+
+{
+nombre:"Star Wars Jedi Survivor",
+precio:59.99,
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"
+}
+
+]
+
+}
+
+},
+
+mounted(){
+
+const sesion =
+localStorage.getItem("sesion")
+
+if(!sesion){
+
+window.location.href =
+"./iniciarsecion.html"
+
+return
+
+}
+
+this.usuario = sesion
+
+},
+
+methods:{
+
+logout(){
+
+localStorage.removeItem(
+"sesion"
+)
+
+localStorage.removeItem(
+"rol"
+)
+
+window.location.href =
+"./iniciarsecion.html"
+
+}
+
+}
+
 }).mount("#app")
+
 </script>
 
 </body>
