@@ -497,6 +497,10 @@ localStorage.getItem("compras")
 
 compras.push({
 
+usuario:
+localStorage.getItem("sesion")
+|| "Usuario desconocido",
+
 telefono:this.telefono,
 
 productos:this.carrito.map(p=>({
