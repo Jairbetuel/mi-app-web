@@ -9,51 +9,141 @@
 <title>Carrito - GameStore</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <script src="https://unpkg.com/vue@3"></script>
 
-<!-- PAYPAL API -->
+<!-- PAYPAL -->
 <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
 
 <style>
 
 body{
-background:#0b0b0b;
-color:white; 
+background:
+linear-gradient(rgba(0,0,0,.92),rgba(0,0,0,.96)),
+url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+color:white;
 font-family:Segoe UI;
+min-height:100vh;
 }
 
-.card{
-background:#141414;
-border:none;
-margin-bottom:15px;
-border-radius:12px;
-transition:0.3s;
+.navbar{
+background:#050505 !important;
+box-shadow:0 0 20px cyan;
+padding:15px;
 }
 
-.card:hover{
-box-shadow:0 0 15px cyan;
-transform:scale(1.02);
-}
-
-.total{
+.navbar-brand{
 font-size:28px;
-color:cyan;
 font-weight:bold;
+color:cyan !important;
+text-shadow:0 0 12px cyan;
+}
+
+.titulo{
+text-align:center;
+font-size:45px;
+font-weight:bold;
+margin-bottom:40px;
+color:cyan;
+text-shadow:0 0 20px cyan;
+}
+
+.card-carrito{
+background:rgba(20,20,20,.92);
+border-radius:22px;
+padding:25px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,255,255,.15);
+transition:.4s;
+border:1px solid rgba(0,255,255,.12);
+}
+
+.card-carrito:hover{
+transform:translateY(-5px);
+box-shadow:0 0 30px cyan;
+}
+
+.game-name{
+font-size:25px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.game-price{
+font-size:24px;
+font-weight:bold;
+color:#00ffff;
 }
 
 .btn-cantidad{
-width:30px;
-height:30px;
-padding:0;
+width:45px;
+height:45px;
+font-size:22px;
+font-weight:bold;
+border-radius:50%;
+border:none;
+}
+
+.total-box{
+background:rgba(20,20,20,.95);
+padding:35px;
+border-radius:25px;
+box-shadow:0 0 35px rgba(0,255,255,.2);
+margin-top:40px;
+}
+
+.total{
+font-size:40px;
+font-weight:bold;
+color:cyan;
+text-shadow:0 0 10px cyan;
+}
+
+.form-control{
+background:#111;
+border:none;
+color:white;
+border-radius:15px;
+padding:15px;
+}
+
+.form-control:focus{
+background:#111;
+color:white;
+box-shadow:0 0 15px cyan;
+}
+
+.btn-whatsapp{
+background:linear-gradient(45deg,#25D366,#1ebe5d);
+border:none;
+font-weight:bold;
+font-size:18px;
+padding:14px;
+border-radius:18px;
+width:100%;
+margin-top:20px;
+}
+
+.btn-danger{
+border-radius:15px;
 }
 
 .paypal-box{
-background:#141414;
-padding:20px;
-border-radius:15px;
+background:rgba(15,15,15,.95);
+padding:25px;
+border-radius:25px;
 margin-top:30px;
-box-shadow:0 0 20px cyan;
+box-shadow:0 0 25px rgba(0,255,255,.15);
+}
+
+.empty-box{
+background:rgba(20,20,20,.92);
+padding:60px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 0 20px rgba(0,255,255,.15);
 }
 
 </style>
@@ -64,8 +154,7 @@ box-shadow:0 0 20px cyan;
 
 <div id="app">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-black">
+<nav class="navbar navbar-dark">
 
 <div class="container">
 
@@ -73,7 +162,10 @@ box-shadow:0 0 20px cyan;
 🎮 GameStore
 </a>
 
-<a href="./Catalogo.html" class="btn btn-outline-info">
+<a
+href="./Catalogo.html"
+class="btn btn-outline-info"
+>
 ← Volver
 </a>
 
@@ -83,35 +175,59 @@ box-shadow:0 0 20px cyan;
 
 <div class="container mt-5">
 
-<h2 class="text-center mb-4">
+<h2 class="titulo">
 🛒 Carrito de Compras
 </h2>
 
-<div v-if="carrito.length===0" class="text-center">
+<div
+v-if="carrito.length===0"
+class="empty-box"
+>
 
-<p class="fs-4">
-Tu carrito está vacío 😢
+<h2>
+😢 Tu carrito está vacío
+</h2>
+
+<p class="mt-3">
+Agrega videojuegos para comenzar tu compra
 </p>
+
+<a
+href="./Catalogo.html"
+class="btn btn-info mt-3"
+>
+Ir al catálogo 🎮
+</a>
 
 </div>
 
 <div v-else>
 
 <div
-class="card p-3"
+class="card-carrito"
 v-for="(p,index) in carrito"
 :key="index"
 >
 
-<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center flex-wrap">
 
 <div>
 
-<h5>{{p.nombre}}</h5>
+<h3 class="game-name">
+{{ p.nombre }}
+</h3>
 
-<p>$ {{p.precio}}</p>
+<p>
+🎮 Nuevo compatible solo para Xbox
+</p>
 
-<div class="d-flex align-items-center">
+<p class="game-price">
+$ {{ p.precio }}
+</p>
+
+</div>
+
+<div class="d-flex align-items-center gap-3">
 
 <button
 @click="disminuir(index)"
@@ -120,20 +236,16 @@ class="btn btn-secondary btn-cantidad"
 -
 </button>
 
-<span class="mx-2">
-{{p.cantidad}}
-</span>
+<h4>
+{{ p.cantidad }}
+</h4>
 
 <button
 @click="aumentar(index)"
-class="btn btn-secondary btn-cantidad"
+class="btn btn-info btn-cantidad"
 >
 +
 </button>
-
-</div>
-
-</div>
 
 <button
 @click="eliminar(index)"
@@ -146,16 +258,41 @@ Eliminar
 
 </div>
 
-<!-- PAYPAL -->
-<div class="paypal-box text-center">
+</div>
 
-<p class="total">
+<div class="total-box text-center">
+
+<h2 class="total">
 Total: ${{ total.toFixed(2) }}
-</p>
+</h2>
+
+<div class="mt-4">
+
+<label class="mb-2">
+📱 Número de teléfono
+</label>
+
+<input
+type="text"
+v-model="telefono"
+class="form-control"
+placeholder="9511234567"
+>
+
+</div>
+
+<button
+@click="confirmarWhatsapp"
+class="btn btn-whatsapp"
+>
+📲 Confirmar compra por WhatsApp
+</button>
+
+<div class="paypal-box">
 
 <img
 src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
-width="120"
+width="140"
 class="mb-3"
 >
 
@@ -163,7 +300,6 @@ class="mb-3"
 💳 Pago seguro con PayPal
 </h4>
 
-<!-- BOTÓN PAYPAL -->
 <div id="paypal-button-container"></div>
 
 <button
@@ -180,9 +316,6 @@ class="btn btn-outline-danger mt-4"
 </div>
 
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
 
 Vue.createApp({
@@ -191,7 +324,12 @@ data(){
 
 return{
 
-carrito: JSON.parse(localStorage.getItem("carrito")) || []
+carrito:
+JSON.parse(
+localStorage.getItem("carrito")
+) || [],
+
+telefono:""
 
 }
 
@@ -211,7 +349,6 @@ p.cantidad = 1
 
 this.guardar()
 
-// ESPERAR A QUE PAYPAL CARGUE
 setTimeout(()=>{
 
 if(typeof paypal !== "undefined"){
@@ -220,7 +357,9 @@ this.renderPaypal()
 
 }else{
 
-console.error("PayPal no cargó")
+console.error(
+"PayPal no cargó"
+)
 
 }
 
@@ -234,7 +373,13 @@ total(){
 
 return this.carrito.reduce(
 
-(s,p)=>s + (Number(p.precio) * Number(p.cantidad)),
+(s,p)=>
+
+s +
+
+(Number(p.precio)
+*
+Number(p.cantidad)),
 
 0
 
@@ -256,7 +401,9 @@ this.guardar()
 
 disminuir(i){
 
-if(this.carrito[i].cantidad > 1){
+if(
+this.carrito[i].cantidad > 1
+){
 
 this.carrito[i].cantidad--
 
@@ -276,9 +423,11 @@ this.guardar()
 
 vaciarCarrito(){
 
-this.carrito = []
+this.carrito=[]
 
-localStorage.removeItem("carrito")
+localStorage.removeItem(
+"carrito"
+)
 
 location.reload()
 
@@ -290,7 +439,98 @@ localStorage.setItem(
 
 "carrito",
 
-JSON.stringify(this.carrito)
+JSON.stringify(
+this.carrito
+)
+
+)
+
+},
+
+confirmarWhatsapp(){
+
+if(!this.telefono){
+
+alert(
+"Ingresa tu teléfono"
+)
+
+return
+
+}
+
+const productos =
+
+this.carrito.map(p=>
+
+`🎮 ${p.nombre}
+x${p.cantidad}
+- $${p.precio}`
+
+).join('%0A')
+
+const mensaje =
+
+`🎮 Hola GameStore!
+
+Quiero confirmar mi compra.
+
+📱 Teléfono:
+${this.telefono}
+
+🛒 Productos:
+${productos}
+
+💰 Total:
+$${this.total.toFixed(2)}
+
+Gracias 🎮`
+
+const numero =
+"529516513410"
+
+// guardar compra para admin
+
+const compras = JSON.parse(
+localStorage.getItem("compras")
+) || []
+
+compras.push({
+
+telefono:this.telefono,
+
+productos:this.carrito.map(p=>({
+
+nombre:p.nombre,
+cantidad:p.cantidad,
+precio:p.precio
+
+})),
+
+total:this.total.toFixed(2),
+
+fecha:new Date()
+.toLocaleString(),
+
+estado:"Pendiente"
+
+})
+
+localStorage.setItem(
+
+"compras",
+
+JSON.stringify(compras)
+
+)
+
+// abrir whatsapp
+
+window.open(
+
+`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`,
+
+'_blank'
 
 )
 
@@ -309,7 +549,8 @@ label:'paypal'
 
 },
 
-createOrder: (data, actions) => {
+createOrder:
+(data, actions)=>{
 
 return actions.order.create({
 
@@ -317,7 +558,8 @@ purchase_units:[{
 
 amount:{
 
-value: this.total.toFixed(2)
+value:
+this.total.toFixed(2)
 
 }
 
@@ -327,21 +569,29 @@ value: this.total.toFixed(2)
 
 },
 
-onApprove: (data, actions) => {
+onApprove:
+(data, actions)=>{
 
-return actions.order.capture().then(details => {
+return actions.order
+.capture()
+
+.then(details=>{
 
 alert(
 
 "✅ Pago completado por " +
 
-details.payer.name.given_name
+details.payer
+.name
+.given_name
 
 )
 
-this.carrito = []
+this.carrito=[]
 
-localStorage.removeItem("carrito")
+localStorage.removeItem(
+"carrito"
+)
 
 location.reload()
 
@@ -349,15 +599,21 @@ location.reload()
 
 },
 
-onError: (err) => {
+onError:(err)=>{
 
 console.error(err)
 
-alert("❌ Error con PayPal")
+alert(
+"❌ Error con PayPal"
+)
 
 }
 
-}).render('#paypal-button-container')
+}).render(
+
+'#paypal-button-container'
+
+)
 
 }
 

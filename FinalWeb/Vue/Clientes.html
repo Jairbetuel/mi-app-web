@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Clientes - GameStore</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<script src="https://unpkg.com/vue@3"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+color:white;
+font-family:Segoe UI;
+}
+
+.navbar{
+background:#050505;
+box-shadow:0 0 20px cyan;
+}
+
+.title{
+text-align:center;
+margin:40px 0;
+font-size:45px;
+color:cyan;
+text-shadow:0 0 20px cyan;
+}
+
+.card-cliente{
+background:#141414;
+border-radius:25px;
+padding:25px;
+margin-bottom:25px;
+box-shadow:0 0 20px rgba(0,255,255,.15);
+transition:.3s;
+}
+
+.card-cliente:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px cyan;
+}
+
+.total{
+color:cyan;
+font-size:25px;
+font-weight:bold;
+}
+
+.estado{
+background:orange;
+padding:8px 16px;
+border-radius:20px;
+font-weight:bold;
+display:inline-block;
+}
+
+.empty{
+text-align:center;
+margin-top:100px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<nav class="navbar navbar-dark">
+
+<div class="container">
+
+<a
+href="./Home.html"
+class="navbar-brand"
+>
+🎮 GameStore Admin
+</a>
+
+<a
+href="./Home.html"
+class="btn btn-outline-info"
+>
+← Inicio
+</a>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<h1 class="title">
+👥 Clientes y Compras
+</h1>
+
+<div
+v-if="compras.length===0"
+class="empty"
+>
+
+<h2>
+No hay compras todavía 😢
+</h2>
+
+</div>
+
+<div
+v-for="(compra,index)
+in compras"
+:key="index"
+class="card-cliente"
+>
+
+<h3>
+📱 {{ compra.telefono }}
+</h3>
+
+<p>
+📅 {{ compra.fecha }}
+</p>
+
+<h5>
+🛒 Productos:
+</h5>
+
+<ul>
+
+<li
+v-for="(p,i)
+in compra.productos"
+:key="i"
+>
+
+{{ p.nombre }}
+
+x{{ p.cantidad }}
+
+- ${{ p.precio }}
+
+</li>
+
+</ul>
+
+<p class="total">
+💰 Total:
+${{ compra.total }}
+</p>
+
+<span class="estado">
+
+{{ compra.estado }}
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+Vue.createApp({
+
+data(){
+
+return{
+
+compras:
+JSON.parse(
+localStorage.getItem(
+"compras"
+)
+) || []
+
+}
+
+},
+
+mounted(){
+
+// solo admin
+
+const rol =
+localStorage.getItem(
+"rol"
+)
+
+if(
+rol !== "admin"
+){
+
+window.location.href =
+"./Home.html"
+
+}
+
+}
+
+}).mount("#app")
+
+</script>
+
+</body>
+</html>
