@@ -371,45 +371,76 @@ localStorage.getItem("carrito")
 apiGames: [],
 
 // juegos guardados localmente
+
 juegos:
 JSON.parse(
 localStorage.getItem("juegos")
 ) || [
 
-{
-nombre:"Elden Ring",
-precio:39.99,
-rating:"★★★★★",
-img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
-},
+{nombre:"Elden Ring",precio:899,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"},
 
-{
-nombre:"Resident Evil 4",
-precio:45,
-rating:"★★★★★",
-img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"
-},
+{nombre:"Resident Evil 4",precio:999,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"},
 
-{
-nombre:"Star Wars Jedi Survivor",
-precio:59.99,
-rating:"★★★★☆",
-img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"
-}
+{nombre:"Star Wars Jedi Survivor",precio:1199,rating:"★★★★☆",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg"},
+
+{nombre:"Call of Duty MW3",precio:1399,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2519060/header.jpg"},
+
+{nombre:"FC 25",precio:1299,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/header.jpg"},
+
+{nombre:"Forza Horizon 5",precio:899,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg"},
+
+{nombre:"Halo Infinite",precio:799,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/header.jpg"},
+
+{nombre:"Minecraft",precio:599,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg"},
+
+{nombre:"Red Dead Redemption 2",precio:799,rating:"★★★★★",versionXbox:"Xbox One",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg"},
+
+{nombre:"Cyberpunk 2077",precio:999,rating:"★★★★☆",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg"},
+
+{nombre:"GTA V",precio:699,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg"},
+
+{nombre:"Assassin's Creed Mirage",precio:899,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/3035570/header.jpg"},
+
+{nombre:"Mortal Kombat 1",precio:1099,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg"},
+
+{nombre:"Street Fighter 6",precio:899,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1364780/header.jpg"},
+
+{nombre:"FIFA 23",precio:699,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg"},
+
+{nombre:"Dragon Ball Sparking Zero",precio:1299,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1790600/header.jpg"},
+
+{nombre:"Tekken 8",precio:1199,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1778820/header.jpg"},
+
+{nombre:"Dead Space Remake",precio:999,rating:"★★★★☆",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1693980/header.jpg"},
+
+{nombre:"Hogwarts Legacy",precio:1099,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg"},
+
+{nombre:"Need For Speed Unbound",precio:799,rating:"★★★★☆",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1846380/header.jpg"},
+
+{nombre:"Battlefield 2042",precio:699,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1517290/header.jpg"},
+
+{nombre:"Sea of Thieves",precio:599,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1172620/header.jpg"},
+
+{nombre:"Far Cry 6",precio:799,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2369390/header.jpg"},
+
+{nombre:"The Witcher 3",precio:499,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg"},
+
+{nombre:"Lies of P",precio:999,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1627720/header.jpg"},
+
+{nombre:"NBA 2K25",precio:1199,rating:"★★★★☆",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2878980/header.jpg"},
+
+{nombre:"Madden NFL 25",precio:1099,rating:"★★★★☆",versionXbox:"Xbox Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2582560/header.jpg"},
+
+{nombre:"Diablo IV",precio:1199,rating:"★★★★★",versionXbox:"Xbox One / Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg"},
+
+{nombre:"Alan Wake 2",precio:999,rating:"★★★★★",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1087100/header.jpg"},
+
+{nombre:"Avatar Frontiers of Pandora",precio:1299,rating:"★★★★☆",versionXbox:"Series X|S",img:"https://cdn.cloudflare.steamstatic.com/steam/apps/2840770/header.jpg"}
 
 ],
 
-nuevo:{
-nombre:"",
-precio:"",
-img:"",
-rating:"★★★★★"
-}
-
-}
-
-},
-
+} // return
+}, // data
 methods:{
 
 // agregar al carrito
